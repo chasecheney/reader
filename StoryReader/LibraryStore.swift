@@ -29,6 +29,7 @@ final class LibraryStore: @unchecked Sendable {
 
     private(set) var storiesURL: URL?
     private(set) var userDataURL: URL?
+    private(set) var rootURL: URL?
     private(set) var usingICloud = false
 
     private let fm = FileManager.default
@@ -50,6 +51,34 @@ final class LibraryStore: @unchecked Sendable {
         try fm.createDirectory(at: userData, withIntermediateDirectories: true)
         storiesURL = stories
         userDataURL = userData
+        rootURL = root
+    }
+
+    // MARK: - Tag library (synced phrase → tag rules)
+
+    func loadTagRules() -> [TagRule] {
+        guard let root = rootURL else { return [] }
+        let url = root.appendingPathComponent(TagLibrary.filename)
+        // On a fresh device the file may still be an iCloud placeholder.
+        let placeholder = root.appendingPathComponent("." + TagLibrary.filename + ".icloud")
+        if fm.fileExists(atPath: placeholder.path) {
+            try? fm.startDownloadingUbiquitousItem(at: placeholder)
+        }
+        guard let data = try? Data(contentsOf: url),
+              let rules = try? JSONDecoder().decode([TagRule].self, from: data) else { return [] }
+        return rules
+    }
+
+    func saveTagRules(_ rules: [TagRule]) {
+        guard let root = rootURL else { return }
+        let url = root.appendingPathComponent(TagLibrary.filename)
+        if rules.isEmpty {
+            try? fm.removeItem(at: url)
+            return
+        }
+        if let data = try? JSONEncoder().encode(rules) {
+            try? data.write(to: url, options: .atomic)
+        }
     }
 
     // MARK: - Listing
@@ -144,13 +173,22 @@ final class LibraryStore: @unchecked Sendable {
 
     // MARK: - Importing
 
-    struct ImportResult { var imported = 0; var skipped = 0; var failed = 0 }
+    struct ImportResult { var imported = 0; var skipped = 0; var failed = 0; var tagged = 0 }
 
     /// Imports .txt files (or folders of them). Files are LZFSE-compressed
     /// into the library. Existing files are skipped.
-    func importFiles(from urls: [URL], progress: @escaping (Int, Int) -> Void) -> ImportResult {
+    ///
+    /// When `autoTagRules` is non-empty, each newly imported story's text is
+    /// scanned with the Tag Library and matched tags (that aren't already in
+    /// the filename) are saved into the story's synced custom-tag metadata.
+    func importFiles(from urls: [URL], autoTagRules: [TagRule] = [],
+                     progress: @escaping (Int, Int) -> Void) -> ImportResult {
         guard let dir = storiesURL else { return ImportResult() }
         var result = ImportResult()
+
+        let matcher = TagLibrary.Matcher(rules: autoTagRules)
+        // Existing metadata, loaded once so auto-tagging merges instead of clobbering.
+        var states: [String: UserState] = matcher.isEmpty ? [:] : loadAllUserStates()
 
         // Expand folders.
         var fileURLs: [URL] = []
@@ -181,6 +219,26 @@ final class LibraryStore: @unchecked Sendable {
                             let packed = try (raw as NSData).compressed(using: .lzfse) as Data
                             try packed.write(to: dest, options: .atomic)
                             result.imported += 1
+
+                            // Auto-tag from the Tag Library.
+                            if !matcher.isEmpty,
+                               let text = String(data: raw, encoding: .utf8)
+                                       ?? String(data: raw, encoding: .isoLatin1) {
+                                let parsed = FilenameParser.parse(stem: f.lastPathComponent)
+                                let found = matcher.tags(in: text)
+                                    .subtracting(parsed.tags)   // filename tags already apply
+                                if !found.isEmpty {
+                                    let id = parsed.storyID ?? f.lastPathComponent
+                                    var state = states[id] ?? UserState()
+                                    let merged = Set(state.customTags).union(found)
+                                    if merged != Set(state.customTags) {
+                                        state.customTags = Array(merged).sorted()
+                                        states[id] = state
+                                        saveUserState(state, for: id)
+                                        result.tagged += 1
+                                    }
+                                }
+                            }
                         } catch {
                             result.failed += 1
                         }

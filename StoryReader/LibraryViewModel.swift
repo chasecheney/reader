@@ -29,6 +29,9 @@ final class LibraryViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var infoMessage: String?
 
+    /// Synced phrase → tag auto-tagging rules (see TagLibrary).
+    @Published private(set) var tagRules: [TagRule] = []
+
     private var searchResults: Set<String>? = nil   // nil = no active search
     private var searchTask: Task<Void, Never>?
     private var userStates: [String: UserState] = [:]
@@ -46,6 +49,7 @@ final class LibraryViewModel: ObservableObject {
                 try store.bootstrap()
             }.value
             usingICloud = store.usingICloud
+            tagRules = store.loadTagRules()
 
             let support = try FileManager.default.url(for: .applicationSupportDirectory,
                                                       in: .userDomainMask,
@@ -297,9 +301,18 @@ final class LibraryViewModel: ObservableObject {
         if rebuild { rebuildGroups() }
     }
 
+    // MARK: - Tag library
+
+    func setTagRules(_ rules: [TagRule]) {
+        let clean = TagLibrary.cleaned(rules)
+        tagRules = clean
+        let store = self.store
+        Task.detached(priority: .utility) { store.saveTagRules(clean) }
+    }
+
     // MARK: - Import
 
-    func importFiles(urls: [URL]) async {
+    func importFiles(urls: [URL], autoTag: Bool = false) async {
         guard !busy else { return }
         busy = true
         statusText = "Importing…"
@@ -307,9 +320,10 @@ final class LibraryViewModel: ObservableObject {
         progressTotal = 0
 
         let store = self.store
+        let rules = autoTag ? tagRules : []
         let (progressStream, progressCont) = AsyncStream.makeStream(of: (Int, Int).self)
         let worker = Task.detached(priority: .userInitiated) {
-            let result = store.importFiles(from: urls) { done, total in
+            let result = store.importFiles(from: urls, autoTagRules: rules) { done, total in
                 progressCont.yield((done, total))
             }
             progressCont.finish()
@@ -325,6 +339,8 @@ final class LibraryViewModel: ObservableObject {
         statusText = nil
         if result.failed > 0 {
             errorMessage = "\(result.failed) files failed to import."
+        } else if result.tagged > 0 {
+            infoMessage = "Imported \(result.imported) stories. \(result.tagged) were auto-tagged from the Tag Library."
         }
         await refresh()
     }

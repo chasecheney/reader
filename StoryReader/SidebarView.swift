@@ -3,6 +3,7 @@ import SwiftUI
 struct SidebarView: View {
     @EnvironmentObject var vm: LibraryViewModel
     @State private var showDeleteConfirm = false
+    @State private var showTagLibrary = false
 
     var body: some View {
         List(selection: Binding<LibraryFilter?>(
@@ -32,6 +33,24 @@ struct SidebarView: View {
                 }
             }
 
+            Section("Settings") {
+                Button {
+                    showTagLibrary = true
+                } label: {
+                    HStack {
+                        Label("Tag Library…", systemImage: "tag.square")
+                        Spacer()
+                        if !vm.tagRules.isEmpty {
+                            Text("\(vm.tagRules.count)")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .monospacedDigit()
+                        }
+                    }
+                }
+                .help("Word/phrase → tag rules used to auto-tag stories on import")
+            }
+
             Section {
                 Button(role: .destructive) {
                     showDeleteConfirm = true
@@ -40,6 +59,10 @@ struct SidebarView: View {
                 }
                 .disabled(vm.busy || vm.stories.isEmpty)
             }
+        }
+        .sheet(isPresented: $showTagLibrary) {
+            TagLibraryView()
+                .environmentObject(vm)
         }
         .confirmationDialog(
             "Delete all \(vm.stories.count) stories?",

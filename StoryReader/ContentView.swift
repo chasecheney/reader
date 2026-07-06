@@ -4,6 +4,8 @@ import UniformTypeIdentifiers
 struct ContentView: View {
     @EnvironmentObject var vm: LibraryViewModel
     @State private var showImporter = false
+    @State private var pendingImportURLs: [URL] = []
+    @State private var showImportOptions = false
     @State private var showBundleImporter = false
     @State private var bundleExportURL: URL?
     @State private var showBundleMover = false
@@ -38,8 +40,16 @@ struct ContentView: View {
                       allowedContentTypes: [.plainText, .folder],
                       allowsMultipleSelection: true) { result in
             if case .success(let urls) = result {
-                Task { await vm.importFiles(urls: urls) }
+                // Show the import options step (auto-tag checkbox) first.
+                pendingImportURLs = urls
+                showImportOptions = true
             }
+        }
+        .sheet(isPresented: $showImportOptions) {
+            ImportOptionsView(urls: pendingImportURLs) { urls, autoTag in
+                Task { await vm.importFiles(urls: urls, autoTag: autoTag) }
+            }
+            .environmentObject(vm)
         }
         .alert("Story Reader", isPresented: Binding(
             get: { vm.errorMessage != nil },
@@ -213,5 +223,66 @@ struct ContentView: View {
             }
             #endif
         }
+    }
+}
+
+/// Small confirmation step between picking files and importing them:
+/// shows what's selected and offers the Tag Library auto-tag checkbox.
+private struct ImportOptionsView: View {
+    @EnvironmentObject var vm: LibraryViewModel
+    @Environment(\.dismiss) private var dismiss
+
+    let urls: [URL]
+    let onImport: ([URL], Bool) -> Void
+
+    /// Remembered between imports.
+    @AppStorage("autoTagOnImport") private var autoTag = true
+
+    private var selectionSummary: String {
+        if urls.count == 1 {
+            return "“\(urls[0].lastPathComponent)”"
+        }
+        return "\(urls.count) selected items"
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Label("Import Stories", systemImage: "square.and.arrow.down.on.square")
+                .font(.headline)
+
+            Text("Importing \(selectionSummary). Files are compressed into the library; tags in filenames are picked up automatically.")
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Toggle(isOn: $autoTag) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Also search story text and add tags from the Tag Library")
+                    Text(vm.tagRules.isEmpty
+                         ? "The Tag Library is empty — add word → tag rules from the sidebar first."
+                         : "\(vm.tagRules.count) rules will be checked against each imported story.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .disabled(vm.tagRules.isEmpty)
+
+            HStack {
+                Spacer()
+                Button("Cancel") { dismiss() }
+                    .keyboardShortcut(.cancelAction)
+                Button("Import") {
+                    onImport(urls, autoTag && !vm.tagRules.isEmpty)
+                    dismiss()
+                }
+                .keyboardShortcut(.defaultAction)
+                .buttonStyle(.borderedProminent)
+            }
+        }
+        .padding(20)
+        #if os(macOS)
+        .frame(minWidth: 460)
+        #else
+        .presentationDetents([.medium])
+        #endif
     }
 }

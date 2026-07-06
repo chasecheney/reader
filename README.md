@@ -26,6 +26,12 @@ On the Mac, click **+** in the sidebar and select a folder of .txt files (or ind
 - Per-story metadata: `…/Documents/UserData/<id>.json` — favorite, read, position, custom tags. Small per-story files sync cleanly with last-writer-wins.
 - Search index: local on each device (`Application Support/StoryReader/index.sqlite`, SQLite FTS5). Never synced, rebuilt incrementally from the library, safe to delete.
 
+## Tag Library (auto-tagging on import)
+
+Sidebar → **Tag Library…** opens the rule editor: each rule maps a word or phrase to a tag, e.g. "marine" → `#military`, "glory hole" → `#gloryhole`. Several phrases can share one tag. Rules are stored in the iCloud container, so both devices use the same library.
+
+When you import files, an options step appears: filename tags are always picked up, and a checkbox offers "search story text and add tags from the Tag Library." With it checked, each imported story's text is scanned (case-insensitive, whole-word matching) and matched tags are saved as custom tags — they sync, they show in the sidebar tag list and filters, and files are never renamed. Tags already present in the filename aren't duplicated. The checkbox state is remembered between imports.
+
 ## Library bundles (share, back up, restore)
 
 The toolbar's shipping-box menu packages the entire library into a single compressed `.storybundle` file, and merges such files back in.
