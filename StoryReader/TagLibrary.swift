@@ -61,13 +61,14 @@ enum TagLibrary {
         TagRule(phrase: "slavery", tag: "slave"),
         TagRule(phrase: "enslavement", tag: "slave"),
         TagRule(phrase: "enslaver", tag: "slave"),
-        // military
+        // military — navy counts only when it isn't the color/clothing
         TagRule(phrase: "army", tag: "military"),
         TagRule(phrase: "marine", tag: "military"),
         TagRule(phrase: "marines", tag: "military"),
         TagRule(phrase: "air force", tag: "military"),
         TagRule(phrase: "airforce", tag: "military"),
         TagRule(phrase: "coast guard", tag: "military"),
+        TagRule(phrase: "navy !blue|blazer|suit|tie", tag: "military"),
         // uniform
         TagRule(phrase: "uniform", tag: "uniform"),
         // police
@@ -99,6 +100,28 @@ enum TagLibrary {
         }
     }
 
+    /// Phrase -> regex pattern. A phrase may carry a "not followed by"
+    /// exclusion after " !":  "navy !blue|blazer|suit|tie"  matches the
+    /// whole word "navy" except when the next word is one of the listed
+    /// ones (handles "navy blue" and hyphenated "navy-blue").
+    static func pattern(for phrase: String) -> String {
+        if let range = phrase.range(of: " !") {
+            let base = String(phrase[..<range.lowerBound])
+                .trimmingCharacters(in: .whitespaces)
+            let words = phrase[range.upperBound...]
+                .split(separator: "|")
+                .map { NSRegularExpression.escapedPattern(
+                    for: $0.trimmingCharacters(in: .whitespaces)) }
+                .filter { !$0.isEmpty }
+            let escaped = NSRegularExpression.escapedPattern(for: base)
+            if !words.isEmpty {
+                return "\\b" + escaped + "\\b(?![\\s\\-]+(?:"
+                    + words.joined(separator: "|") + ")\\b)"
+            }
+        }
+        return "\\b" + NSRegularExpression.escapedPattern(for: phrase) + "\\b"
+    }
+
     // MARK: - Matching
 
     /// Compiled matcher for scanning story text. Build once per import run.
@@ -107,9 +130,8 @@ enum TagLibrary {
 
         init(rules: [TagRule]) {
             compiled = TagLibrary.cleaned(rules).compactMap { r in
-                let escaped = NSRegularExpression.escapedPattern(for: r.phrase)
                 guard let re = try? NSRegularExpression(
-                    pattern: "\\b" + escaped + "\\b",
+                    pattern: TagLibrary.pattern(for: r.phrase),
                     options: [.caseInsensitive]) else { return nil }
                 return (r.tag, re)
             }

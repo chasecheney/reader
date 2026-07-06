@@ -49,7 +49,7 @@ struct TagLibraryView: View {
                 } header: {
                     Text("When story text contains…")
                 } footer: {
-                    Text("Matching is case-insensitive and whole-word (“war” won’t match “warm”). Several phrases may share one tag — e.g. army, marine, and air force can all assign #military. Rules are used when you import files with “auto-tag” checked; matched tags become custom tags, files are never renamed.")
+                    Text("Matching is case-insensitive and whole-word (“war” won’t match “warm”). Several phrases may share one tag — e.g. army, marine, and air force can all assign #military. A phrase can exclude following words with “!”: “navy !blue|blazer|suit|tie” matches navy except in navy blue/blazer/suit/tie. Rules are used when you import files with “auto-tag” checked; matched tags become custom tags, files are never renamed.")
                 }
 
                 Section("Add Rule") {
