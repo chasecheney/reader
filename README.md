@@ -48,6 +48,6 @@ Format (for reference): `"STRYBNDL"` magic, format version, JSON manifest (stem,
 ## Notes
 
 - Custom tags added in-app live in the synced metadata, not the filename — files are never renamed.
-- Search matches word prefixes across title, tags, and full text. Filter by tag from the sidebar; counts include custom tags.
+- Search matches word prefixes across title, tags, and full text, and supports query syntax: `"quoted text"` requires the exact phrase (words adjacent, in order); `AND` / `OR` (any case) combine terms, with AND binding tighter than OR; bare words are implicitly ANDed. Example: `blue AND gold OR "my brother"`. Filter by tag from the sidebar; counts include custom tags.
 - A story is auto-marked read when you scroll past ~92%.
 - Cmd-R (Mac) or the refresh button re-scans the library at any time.

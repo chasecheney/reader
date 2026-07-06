@@ -172,13 +172,69 @@ actor SearchIndex {
         return out
     }
 
+    /// Builds an FTS5 MATCH expression from a user query.
+    ///
+    /// Supported syntax:
+    ///   - "quoted text"  -> exact phrase match (words in order, adjacent)
+    ///   - AND / OR       -> boolean operators (case-insensitive)
+    ///   - bare words     -> prefix match, implicitly ANDed (old behavior)
+    ///
+    ///   blue AND gold or "my brother"
+    ///   -> "blue"* AND "gold"* OR "my brother"
+    ///
+    /// FTS5 precedence is NOT > AND > OR, so AND binds tighter than OR.
+    /// All terms are quoted/escaped — user input never touches the SQL.
+    static func buildMatchQuery(_ input: String) -> String {
+        enum Piece { case term(String); case op(String) }
+        var pieces: [Piece] = []
+
+        func tokens(in s: Substring) -> [String] {
+            s.lowercased()
+                .components(separatedBy: CharacterSet.alphanumerics.inverted)
+                .filter { !$0.isEmpty }
+        }
+
+        var rest = Substring(input)
+        while let qStart = rest.firstIndex(of: "\"") {
+            // words before the quote
+            for w in tokens(in: rest[..<qStart]) {
+                if w == "and" || w == "or" { pieces.append(.op(w.uppercased())) }
+                else { pieces.append(.term("\"\(w)\"*")) }
+            }
+            // the quoted phrase (unterminated quote runs to end of input)
+            let afterQuote = rest.index(after: qStart)
+            let qEnd = rest[afterQuote...].firstIndex(of: "\"") ?? rest.endIndex
+            let phrase = tokens(in: rest[afterQuote..<qEnd]).joined(separator: " ")
+            if !phrase.isEmpty { pieces.append(.term("\"\(phrase)\"")) }
+            rest = qEnd < rest.endIndex ? rest[rest.index(after: qEnd)...] : Substring("")
+        }
+        for w in tokens(in: rest) {
+            if w == "and" || w == "or" { pieces.append(.op(w.uppercased())) }
+            else { pieces.append(.term("\"\(w)\"*")) }
+        }
+
+        // Assemble: implicit AND between adjacent terms; drop dangling
+        // operators and collapse doubled ones.
+        var parts: [String] = []
+        var pendingOp: String? = nil
+        for piece in pieces {
+            switch piece {
+            case .op(let o):
+                if !parts.isEmpty { pendingOp = o }   // ignore leading op
+            case .term(let t):
+                if !parts.isEmpty { parts.append(pendingOp ?? "AND") }
+                pendingOp = nil
+                parts.append(t)
+            }
+        }
+        return parts.joined(separator: " ")
+    }
+
     /// Full-text search over title, tags and body. Returns matching stems.
+    /// Supports quoted exact phrases and AND/OR — see `buildMatchQuery`.
     func search(_ text: String) -> Set<String> {
-        let tokens = text.lowercased()
-            .components(separatedBy: CharacterSet.alphanumerics.inverted)
-            .filter { !$0.isEmpty }
-        guard !tokens.isEmpty else { return [] }
-        let match = tokens.map { "\"\($0)\"*" }.joined(separator: " ")
+        let match = Self.buildMatchQuery(text)
+        guard !match.isEmpty else { return [] }
 
         var out: Set<String> = []
         guard let stmt = try? prepare("""

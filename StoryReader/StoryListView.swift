@@ -45,7 +45,8 @@ struct StoryListView: View {
                 }
             }
         }
-        .searchable(text: $vm.searchText, prompt: "Search titles, tags, and text")
+        .searchable(text: $vm.searchText,
+                    prompt: "Search — use \"exact phrase\", AND, OR")
         .navigationTitle(vm.filter.label)
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
