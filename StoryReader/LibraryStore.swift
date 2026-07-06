@@ -59,10 +59,20 @@ final class LibraryStore: @unchecked Sendable {
     func loadTagRules() -> [TagRule] {
         guard let root = rootURL else { return [] }
         let url = root.appendingPathComponent(TagLibrary.filename)
-        // On a fresh device the file may still be an iCloud placeholder.
+        // On a fresh device the file may still be an iCloud placeholder —
+        // request it and return nothing rather than seeding defaults over
+        // rules that are about to sync down.
         let placeholder = root.appendingPathComponent("." + TagLibrary.filename + ".icloud")
         if fm.fileExists(atPath: placeholder.path) {
             try? fm.startDownloadingUbiquitousItem(at: placeholder)
+            return []
+        }
+        // No saved library anywhere: first launch → seed the default rules.
+        // (An intentionally cleared library is saved as "[]", not deleted,
+        // so defaults don't resurrect.)
+        guard fm.fileExists(atPath: url.path) else {
+            saveTagRules(TagLibrary.defaultRules)
+            return TagLibrary.defaultRules
         }
         guard let data = try? Data(contentsOf: url),
               let rules = try? JSONDecoder().decode([TagRule].self, from: data) else { return [] }
@@ -72,10 +82,6 @@ final class LibraryStore: @unchecked Sendable {
     func saveTagRules(_ rules: [TagRule]) {
         guard let root = rootURL else { return }
         let url = root.appendingPathComponent(TagLibrary.filename)
-        if rules.isEmpty {
-            try? fm.removeItem(at: url)
-            return
-        }
         if let data = try? JSONEncoder().encode(rules) {
             try? data.write(to: url, options: .atomic)
         }

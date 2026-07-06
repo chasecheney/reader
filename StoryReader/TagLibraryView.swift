@@ -81,6 +81,15 @@ struct TagLibraryView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
                 }
+                #if os(macOS)
+                ToolbarItem(placement: .automatic) {
+                    Button("Restore Defaults") { restoreDefaults() }
+                }
+                #else
+                ToolbarItem(placement: .secondaryAction) {
+                    Button("Restore Defaults") { restoreDefaults() }
+                }
+                #endif
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
                         addRule()   // catch a filled-in but un-added row
@@ -94,6 +103,15 @@ struct TagLibraryView: View {
         #if os(macOS)
         .frame(minWidth: 560, minHeight: 440)
         #endif
+    }
+
+    /// Re-adds any default rule that's missing; keeps everything the user added.
+    private func restoreDefaults() {
+        let existing = Set(rules.map { "\($0.phrase.lowercased())→\($0.tag)" })
+        for def in TagLibrary.defaultRules
+        where !existing.contains("\(def.phrase.lowercased())→\(def.tag)") {
+            rules.append(def)
+        }
     }
 
     private func addRule() {
