@@ -7,8 +7,10 @@ struct ContentView: View {
     @State private var pendingImportURLs: [URL] = []
     @State private var showImportOptions = false
     @State private var showBundleImporter = false
+    @State private var pendingBundleURL: URL?
     @State private var bundleExportURL: URL?
     @State private var showBundleMover = false
+    @State private var showExportShare = false
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
 
     /// The shareable library bundle file type (.storybundle).
@@ -159,7 +161,28 @@ struct ContentView: View {
                       allowedContentTypes: [Self.bundleType, .data],
                       allowsMultipleSelection: false) { result in
             if case .success(let urls) = result, let url = urls.first {
-                Task { await vm.importBundle(url: url) }
+                pendingBundleURL = url   // ask merge-vs-replace first
+            }
+        }
+        .sheet(isPresented: Binding(
+            get: { pendingBundleURL != nil },
+            set: { if !$0 { pendingBundleURL = nil } })) {
+            if let url = pendingBundleURL {
+                BundleImportOptionsView(url: url) { replace in
+                    Task { await vm.importBundle(url: url, replace: replace) }
+                }
+                .environmentObject(vm)
+            }
+        }
+        .sheet(isPresented: $showExportShare) {
+            if let url = bundleExportURL {
+                ExportShareView(url: url) {
+                    showExportShare = false
+                    // Let the sheet fully dismiss before presenting the mover.
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                        showBundleMover = true
+                    }
+                }
             }
         }
         .fileMover(isPresented: $showBundleMover, file: bundleExportURL) { result in
@@ -187,7 +210,7 @@ struct ContentView: View {
                         Task {
                             if let url = await vm.exportBundle() {
                                 bundleExportURL = url
-                                showBundleMover = true
+                                showExportShare = true
                             }
                         }
                     } label: {
@@ -231,6 +254,105 @@ struct ContentView: View {
             }
             #endif
         }
+    }
+}
+
+/// Merge-vs-replace choice after picking a .storybundle.
+private struct BundleImportOptionsView: View {
+    @EnvironmentObject var vm: LibraryViewModel
+    @Environment(\.dismiss) private var dismiss
+    let url: URL
+    let onImport: (Bool) -> Void
+
+    @State private var replace = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Label("Import Library Bundle", systemImage: "shippingbox")
+                .font(.headline)
+            Text("“\(url.lastPathComponent)”")
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+
+            Picker("Mode", selection: $replace) {
+                Text("Merge").tag(false)
+                Text("Replace").tag(true)
+            }
+            .pickerStyle(.segmented)
+            .labelsHidden()
+
+            Text(replace
+                 ? "Removes all \(vm.stories.count) existing stories first, so the library ends up exactly matching the bundle. Favorites, positions, tags, and your dictionary are kept — and re-apply to stories that come back with the same id.\(vm.usingICloud ? " Removal syncs to your other device." : "")"
+                 : "Adds stories you don't have and updates ones where the bundle is newer. Nothing is ever removed. Safe to repeat.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            HStack {
+                Spacer()
+                Button("Cancel") { dismiss() }
+                    .keyboardShortcut(.cancelAction)
+                Button(replace ? "Replace Library" : "Import") {
+                    onImport(replace)
+                    dismiss()
+                }
+                .keyboardShortcut(.defaultAction)
+                .buttonStyle(.borderedProminent)
+                .tint(replace ? .red : .accentColor)
+            }
+        }
+        .padding(20)
+        #if os(macOS)
+        .frame(minWidth: 460)
+        #else
+        .presentationDetents([.medium])
+        #endif
+    }
+}
+
+/// Post-export step: share the bundle directly (AirDrop, Messages, …) or
+/// save it as a file.
+private struct ExportShareView: View {
+    @Environment(\.dismiss) private var dismiss
+    let url: URL
+    let onSaveToFile: () -> Void
+
+    private var sizeText: String {
+        let bytes = (try? FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int) ?? nil
+        return bytes.map { $0.byteString } ?? ""
+    }
+
+    var body: some View {
+        VStack(spacing: 16) {
+            Label("Library Bundle Ready", systemImage: "shippingbox.fill")
+                .font(.headline)
+            Text("“\(url.lastPathComponent)”\(sizeText.isEmpty ? "" : " · \(sizeText)")")
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+
+            ShareLink(item: url) {
+                Label("Share… (AirDrop, Messages, Mail)", systemImage: "square.and.arrow.up")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+
+            Button {
+                onSaveToFile()
+            } label: {
+                Label("Save to File…", systemImage: "folder")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.bordered)
+
+            Button("Done") { dismiss() }
+                .padding(.top, 4)
+        }
+        .padding(24)
+        #if os(macOS)
+        .frame(minWidth: 380)
+        #else
+        .presentationDetents([.medium])
+        #endif
     }
 }
 

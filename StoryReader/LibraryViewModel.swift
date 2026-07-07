@@ -451,8 +451,11 @@ final class LibraryViewModel: ObservableObject {
         }
     }
 
-    /// Imports (merges) a .storybundle into the library, then re-indexes.
-    func importBundle(url: URL) async {
+    /// Imports a .storybundle into the library, then re-indexes.
+    /// `replace: true` removes all existing stories first (metadata,
+    /// dictionary, and tag rules are kept), so the library ends up exactly
+    /// matching the bundle. Default is a pure merge.
+    func importBundle(url: URL, replace: Bool = false) async {
         guard !busy else { return }
         busy = true
         statusText = "Importing library bundle…"
@@ -460,6 +463,13 @@ final class LibraryViewModel: ObservableObject {
         progressTotal = 0
 
         let store = self.store
+        if replace {
+            statusText = "Removing existing stories…"
+            await Task.detached(priority: .userInitiated) {
+                store.deleteAllStoryFiles()
+            }.value
+            statusText = "Importing library bundle…"
+        }
         let (progressStream, progressCont) = AsyncStream.makeStream(of: (Int, Int).self)
         let worker = Task.detached(priority: .userInitiated) { () -> Result<LibraryBundle.ImportResult, Error> in
             defer { progressCont.finish() }
