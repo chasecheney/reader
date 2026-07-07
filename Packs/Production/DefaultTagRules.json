@@ -2,65 +2,3661 @@
   "packVersion": 1,
   "name": "Production",
   "rules": [
-    { "phrase": "interior", "tag": "interior" },
-    { "phrase": "int", "tag": "interior" },
-    { "phrase": "exterior", "tag": "exterior" },
-    { "phrase": "ext", "tag": "exterior" },
-    { "phrase": "night shoot", "tag": "night" },
-    { "phrase": "nighttime", "tag": "night" },
-    { "phrase": "stunt", "tag": "stunt" },
-    { "phrase": "stunts", "tag": "stunt" },
-    { "phrase": "stuntman", "tag": "stunt" },
-    { "phrase": "stunt double", "tag": "stunt" },
-    { "phrase": "vfx", "tag": "vfx" },
-    { "phrase": "cgi", "tag": "vfx" },
-    { "phrase": "greenscreen", "tag": "vfx" },
-    { "phrase": "green screen", "tag": "vfx" },
-    { "phrase": "compositing", "tag": "vfx" },
-    { "phrase": "sfx", "tag": "sfx" },
-    { "phrase": "practical effects", "tag": "sfx" },
-    { "phrase": "pyrotechnics", "tag": "sfx" },
-    { "phrase": "wardrobe", "tag": "wardrobe" },
-    { "phrase": "costume", "tag": "wardrobe" },
-    { "phrase": "costumes", "tag": "wardrobe" },
-    { "phrase": "fitting", "tag": "wardrobe" },
-    { "phrase": "makeup", "tag": "makeup" },
-    { "phrase": "prosthetics", "tag": "makeup" },
-    { "phrase": "props", "tag": "props" },
-    { "phrase": "set dressing", "tag": "props" },
-    { "phrase": "voiceover", "tag": "dialogue" },
-    { "phrase": "voice over", "tag": "dialogue" },
-    { "phrase": "adr", "tag": "dialogue" },
-    { "phrase": "extras", "tag": "crowd" },
-    { "phrase": "background actors", "tag": "crowd" },
-    { "phrase": "on location", "tag": "location" },
-    { "phrase": "location scout", "tag": "location" },
-    { "phrase": "soundstage", "tag": "studio" },
-    { "phrase": "studio lot", "tag": "studio" },
-    { "phrase": "rehearsal", "tag": "rehearsal" },
-    { "phrase": "table read", "tag": "rehearsal" },
-    { "phrase": "blocking", "tag": "rehearsal" },
-    { "phrase": "continuity", "tag": "continuity" },
-    { "phrase": "script supervisor", "tag": "continuity" },
-    { "phrase": "first draft", "tag": "draft" },
-    { "phrase": "rough draft", "tag": "draft" },
-    { "phrase": "rewrite", "tag": "revision" },
-    { "phrase": "revised pages", "tag": "revision" },
-    { "phrase": "pink pages", "tag": "revision" },
-    { "phrase": "blue pages", "tag": "revision" },
-    { "phrase": "final draft", "tag": "final" },
-    { "phrase": "shooting script", "tag": "final" },
-    { "phrase": "teleprompter", "tag": "prompter" },
-    { "phrase": "prompter", "tag": "prompter" },
-    { "phrase": "closeup", "tag": "camera" },
-    { "phrase": "close up", "tag": "camera" },
-    { "phrase": "wide shot", "tag": "camera" },
-    { "phrase": "tracking shot", "tag": "camera" },
-    { "phrase": "steadicam", "tag": "camera" },
-    { "phrase": "gaffer", "tag": "lighting" },
-    { "phrase": "key light", "tag": "lighting" },
-    { "phrase": "foley", "tag": "sound" },
-    { "phrase": "sound mixer", "tag": "sound" },
-    { "phrase": "boom operator", "tag": "sound" }
+    {
+      "phrase": "ad-lib",
+      "tag": "acting"
+    },
+    {
+      "phrase": "against type",
+      "tag": "acting"
+    },
+    {
+      "phrase": "background actor",
+      "tag": "acting"
+    },
+    {
+      "phrase": "bad take",
+      "tag": "acting"
+    },
+    {
+      "phrase": "body double",
+      "tag": "acting"
+    },
+    {
+      "phrase": "breaking character",
+      "tag": "acting"
+    },
+    {
+      "phrase": "breaking the fourth wall",
+      "tag": "acting"
+    },
+    {
+      "phrase": "callback",
+      "tag": "acting"
+    },
+    {
+      "phrase": "cameo",
+      "tag": "acting"
+    },
+    {
+      "phrase": "chemistry read",
+      "tag": "acting"
+    },
+    {
+      "phrase": "chewing the scenery",
+      "tag": "acting"
+    },
+    {
+      "phrase": "cold read",
+      "tag": "acting"
+    },
+    {
+      "phrase": "day player",
+      "tag": "acting"
+    },
+    {
+      "phrase": "downstage",
+      "tag": "acting"
+    },
+    {
+      "phrase": "featured extra",
+      "tag": "acting"
+    },
+    {
+      "phrase": "given circumstances",
+      "tag": "acting"
+    },
+    {
+      "phrase": "good take",
+      "tag": "acting"
+    },
+    {
+      "phrase": "guest star",
+      "tag": "acting"
+    },
+    {
+      "phrase": "hammy",
+      "tag": "acting"
+    },
+    {
+      "phrase": "improv",
+      "tag": "acting"
+    },
+    {
+      "phrase": "line reading",
+      "tag": "acting"
+    },
+    {
+      "phrase": "meisner",
+      "tag": "acting"
+    },
+    {
+      "phrase": "method acting",
+      "tag": "acting"
+    },
+    {
+      "phrase": "moment before",
+      "tag": "acting"
+    },
+    {
+      "phrase": "mugging",
+      "tag": "acting"
+    },
+    {
+      "phrase": "off-book",
+      "tag": "acting"
+    },
+    {
+      "phrase": "on-book",
+      "tag": "acting"
+    },
+    {
+      "phrase": "overact",
+      "tag": "acting"
+    },
+    {
+      "phrase": "photo double",
+      "tag": "acting"
+    },
+    {
+      "phrase": "playing the result",
+      "tag": "acting"
+    },
+    {
+      "phrase": "recurring role",
+      "tag": "acting"
+    },
+    {
+      "phrase": "sag card",
+      "tag": "acting"
+    },
+    {
+      "phrase": "scene partner",
+      "tag": "acting"
+    },
+    {
+      "phrase": "screen test",
+      "tag": "acting"
+    },
+    {
+      "phrase": "self-tape",
+      "tag": "acting"
+    },
+    {
+      "phrase": "sense memory",
+      "tag": "acting"
+    },
+    {
+      "phrase": "series regular",
+      "tag": "acting"
+    },
+    {
+      "phrase": "stage business",
+      "tag": "acting"
+    },
+    {
+      "phrase": "stand-in",
+      "tag": "acting"
+    },
+    {
+      "phrase": "stanislavski",
+      "tag": "acting"
+    },
+    {
+      "phrase": "table read",
+      "tag": "acting"
+    },
+    {
+      "phrase": "typecast",
+      "tag": "acting"
+    },
+    {
+      "phrase": "underact",
+      "tag": "acting"
+    },
+    {
+      "phrase": "upstage",
+      "tag": "acting"
+    },
+    {
+      "phrase": "usable take",
+      "tag": "acting"
+    },
+    {
+      "phrase": "2d animation",
+      "tag": "animation"
+    },
+    {
+      "phrase": "3d animation",
+      "tag": "animation"
+    },
+    {
+      "phrase": "animatic",
+      "tag": "animation"
+    },
+    {
+      "phrase": "anime",
+      "tag": "animation"
+    },
+    {
+      "phrase": "cg animation",
+      "tag": "animation"
+    },
+    {
+      "phrase": "character rig",
+      "tag": "animation"
+    },
+    {
+      "phrase": "claymation",
+      "tag": "animation"
+    },
+    {
+      "phrase": "cutout animation",
+      "tag": "animation"
+    },
+    {
+      "phrase": "in-between",
+      "tag": "animation"
+    },
+    {
+      "phrase": "keyframe",
+      "tag": "animation"
+    },
+    {
+      "phrase": "mocap",
+      "tag": "animation"
+    },
+    {
+      "phrase": "model sheet",
+      "tag": "animation"
+    },
+    {
+      "phrase": "motion capture",
+      "tag": "animation"
+    },
+    {
+      "phrase": "performance capture",
+      "tag": "animation"
+    },
+    {
+      "phrase": "render farm",
+      "tag": "animation"
+    },
+    {
+      "phrase": "rotoscope animation",
+      "tag": "animation"
+    },
+    {
+      "phrase": "stop-motion",
+      "tag": "animation"
+    },
+    {
+      "phrase": "storyboard",
+      "tag": "animation"
+    },
+    {
+      "phrase": "tweening",
+      "tag": "animation"
+    },
+    {
+      "phrase": "animatronics",
+      "tag": "art"
+    },
+    {
+      "phrase": "backlot",
+      "tag": "art"
+    },
+    {
+      "phrase": "base camp",
+      "tag": "art"
+    },
+    {
+      "phrase": "blood rig",
+      "tag": "art"
+    },
+    {
+      "phrase": "box rental",
+      "tag": "art"
+    },
+    {
+      "phrase": "breakaway",
+      "tag": "art"
+    },
+    {
+      "phrase": "continuity photos",
+      "tag": "art"
+    },
+    {
+      "phrase": "craft services",
+      "tag": "art"
+    },
+    {
+      "phrase": "cyc wall",
+      "tag": "art"
+    },
+    {
+      "phrase": "forced perspective",
+      "tag": "art"
+    },
+    {
+      "phrase": "front projection",
+      "tag": "art"
+    },
+    {
+      "phrase": "greeked text",
+      "tag": "art"
+    },
+    {
+      "phrase": "green room",
+      "tag": "art"
+    },
+    {
+      "phrase": "hero prop",
+      "tag": "art"
+    },
+    {
+      "phrase": "holding area",
+      "tag": "art"
+    },
+    {
+      "phrase": "kit rental",
+      "tag": "art"
+    },
+    {
+      "phrase": "matte painting",
+      "tag": "art"
+    },
+    {
+      "phrase": "period piece",
+      "tag": "art"
+    },
+    {
+      "phrase": "picture vehicle",
+      "tag": "art"
+    },
+    {
+      "phrase": "practical effects",
+      "tag": "art"
+    },
+    {
+      "phrase": "practical set",
+      "tag": "art"
+    },
+    {
+      "phrase": "process shot",
+      "tag": "art"
+    },
+    {
+      "phrase": "product placement",
+      "tag": "art"
+    },
+    {
+      "phrase": "props table",
+      "tag": "art"
+    },
+    {
+      "phrase": "prosthetics",
+      "tag": "art"
+    },
+    {
+      "phrase": "puppeteer",
+      "tag": "art"
+    },
+    {
+      "phrase": "rear projection",
+      "tag": "art"
+    },
+    {
+      "phrase": "rubber prop",
+      "tag": "art"
+    },
+    {
+      "phrase": "scenic artist",
+      "tag": "art"
+    },
+    {
+      "phrase": "set build",
+      "tag": "art"
+    },
+    {
+      "phrase": "set dressing",
+      "tag": "art"
+    },
+    {
+      "phrase": "set piece",
+      "tag": "art"
+    },
+    {
+      "phrase": "soundstage",
+      "tag": "art"
+    },
+    {
+      "phrase": "squib",
+      "tag": "art"
+    },
+    {
+      "phrase": "teardown",
+      "tag": "art"
+    },
+    {
+      "phrase": "weathering",
+      "tag": "art"
+    },
+    {
+      "phrase": "wild wall",
+      "tag": "art"
+    },
+    {
+      "phrase": "ancillary",
+      "tag": "business"
+    },
+    {
+      "phrase": "avod",
+      "tag": "business"
+    },
+    {
+      "phrase": "awards campaign",
+      "tag": "business"
+    },
+    {
+      "phrase": "awards season",
+      "tag": "business"
+    },
+    {
+      "phrase": "back end",
+      "tag": "business"
+    },
+    {
+      "phrase": "box office",
+      "tag": "business"
+    },
+    {
+      "phrase": "breakeven",
+      "tag": "business"
+    },
+    {
+      "phrase": "cinemascore",
+      "tag": "business"
+    },
+    {
+      "phrase": "completion bond",
+      "tag": "business"
+    },
+    {
+      "phrase": "day-and-date release",
+      "tag": "business"
+    },
+    {
+      "phrase": "dga",
+      "tag": "business"
+    },
+    {
+      "phrase": "domestic gross",
+      "tag": "business"
+    },
+    {
+      "phrase": "exhibitor",
+      "tag": "business"
+    },
+    {
+      "phrase": "festival circuit",
+      "tag": "business"
+    },
+    {
+      "phrase": "first-dollar gross",
+      "tag": "business"
+    },
+    {
+      "phrase": "for your consideration",
+      "tag": "business"
+    },
+    {
+      "phrase": "four-quadrant movie",
+      "tag": "business"
+    },
+    {
+      "phrase": "four-walling",
+      "tag": "business"
+    },
+    {
+      "phrase": "front-loaded",
+      "tag": "business"
+    },
+    {
+      "phrase": "fyc",
+      "tag": "business"
+    },
+    {
+      "phrase": "gross points",
+      "tag": "business"
+    },
+    {
+      "phrase": "high concept",
+      "tag": "business"
+    },
+    {
+      "phrase": "home entertainment",
+      "tag": "business"
+    },
+    {
+      "phrase": "international gross",
+      "tag": "business"
+    },
+    {
+      "phrase": "licensing",
+      "tag": "business"
+    },
+    {
+      "phrase": "limited release",
+      "tag": "business"
+    },
+    {
+      "phrase": "low budget",
+      "tag": "business"
+    },
+    {
+      "phrase": "merchandising",
+      "tag": "business"
+    },
+    {
+      "phrase": "microbudget",
+      "tag": "business"
+    },
+    {
+      "phrase": "minimum guarantee",
+      "tag": "business"
+    },
+    {
+      "phrase": "negative cost",
+      "tag": "business"
+    },
+    {
+      "phrase": "net points",
+      "tag": "business"
+    },
+    {
+      "phrase": "opening weekend",
+      "tag": "business"
+    },
+    {
+      "phrase": "oscar bait",
+      "tag": "business"
+    },
+    {
+      "phrase": "output deal",
+      "tag": "business"
+    },
+    {
+      "phrase": "per-screen average",
+      "tag": "business"
+    },
+    {
+      "phrase": "platform release",
+      "tag": "business"
+    },
+    {
+      "phrase": "pre-sale",
+      "tag": "business"
+    },
+    {
+      "phrase": "prints and advertising",
+      "tag": "business"
+    },
+    {
+      "phrase": "pvod",
+      "tag": "business"
+    },
+    {
+      "phrase": "qualifying run",
+      "tag": "business"
+    },
+    {
+      "phrase": "red carpet",
+      "tag": "business"
+    },
+    {
+      "phrase": "sales agent",
+      "tag": "business"
+    },
+    {
+      "phrase": "screener",
+      "tag": "business"
+    },
+    {
+      "phrase": "screening copy",
+      "tag": "business"
+    },
+    {
+      "phrase": "svod",
+      "tag": "business"
+    },
+    {
+      "phrase": "territory sale",
+      "tag": "business"
+    },
+    {
+      "phrase": "theatrical release",
+      "tag": "business"
+    },
+    {
+      "phrase": "theatrical window",
+      "tag": "business"
+    },
+    {
+      "phrase": "tvod",
+      "tag": "business"
+    },
+    {
+      "phrase": "vod",
+      "tag": "business"
+    },
+    {
+      "phrase": "wga",
+      "tag": "business"
+    },
+    {
+      "phrase": "wide release",
+      "tag": "business"
+    },
+    {
+      "phrase": "word of mouth",
+      "tag": "business"
+    },
+    {
+      "phrase": "worldwide gross",
+      "tag": "business"
+    },
+    {
+      "phrase": "180-degree rule",
+      "tag": "camera"
+    },
+    {
+      "phrase": "anamorphic",
+      "tag": "camera"
+    },
+    {
+      "phrase": "arc shot",
+      "tag": "camera"
+    },
+    {
+      "phrase": "aspect ratio",
+      "tag": "camera"
+    },
+    {
+      "phrase": "bird's-eye view",
+      "tag": "camera"
+    },
+    {
+      "phrase": "bokeh",
+      "tag": "camera"
+    },
+    {
+      "phrase": "camera car",
+      "tag": "camera"
+    },
+    {
+      "phrase": "camera rig",
+      "tag": "camera"
+    },
+    {
+      "phrase": "clean single",
+      "tag": "camera"
+    },
+    {
+      "phrase": "close-up",
+      "tag": "camera"
+    },
+    {
+      "phrase": "color temperature",
+      "tag": "camera"
+    },
+    {
+      "phrase": "cowboy shot",
+      "tag": "camera"
+    },
+    {
+      "phrase": "crane shot",
+      "tag": "camera"
+    },
+    {
+      "phrase": "crash zoom",
+      "tag": "camera"
+    },
+    {
+      "phrase": "crop factor",
+      "tag": "camera"
+    },
+    {
+      "phrase": "deep focus",
+      "tag": "camera"
+    },
+    {
+      "phrase": "depth of field",
+      "tag": "camera"
+    },
+    {
+      "phrase": "dirty single",
+      "tag": "camera"
+    },
+    {
+      "phrase": "dolly shot",
+      "tag": "camera"
+    },
+    {
+      "phrase": "dolly zoom",
+      "tag": "camera"
+    },
+    {
+      "phrase": "drone shot",
+      "tag": "camera"
+    },
+    {
+      "phrase": "dutch angle",
+      "tag": "camera"
+    },
+    {
+      "phrase": "establishing shot",
+      "tag": "camera"
+    },
+    {
+      "phrase": "extreme close-up",
+      "tag": "camera"
+    },
+    {
+      "phrase": "eyeline",
+      "tag": "camera"
+    },
+    {
+      "phrase": "follow focus",
+      "tag": "camera"
+    },
+    {
+      "phrase": "full frame",
+      "tag": "camera"
+    },
+    {
+      "phrase": "gimbal",
+      "tag": "camera"
+    },
+    {
+      "phrase": "headroom",
+      "tag": "camera"
+    },
+    {
+      "phrase": "high angle",
+      "tag": "camera"
+    },
+    {
+      "phrase": "hyperlapse",
+      "tag": "camera"
+    },
+    {
+      "phrase": "insert shot",
+      "tag": "camera"
+    },
+    {
+      "phrase": "jib shot",
+      "tag": "camera"
+    },
+    {
+      "phrase": "lead room",
+      "tag": "camera"
+    },
+    {
+      "phrase": "locked-off shot",
+      "tag": "camera"
+    },
+    {
+      "phrase": "long shot",
+      "tag": "camera"
+    },
+    {
+      "phrase": "low angle",
+      "tag": "camera"
+    },
+    {
+      "phrase": "macro",
+      "tag": "camera"
+    },
+    {
+      "phrase": "master shot",
+      "tag": "camera"
+    },
+    {
+      "phrase": "matte box",
+      "tag": "camera"
+    },
+    {
+      "phrase": "medium shot",
+      "tag": "camera"
+    },
+    {
+      "phrase": "monopod",
+      "tag": "camera"
+    },
+    {
+      "phrase": "nd filter",
+      "tag": "camera"
+    },
+    {
+      "phrase": "neutral density",
+      "tag": "camera"
+    },
+    {
+      "phrase": "nose room",
+      "tag": "camera"
+    },
+    {
+      "phrase": "over-the-shoulder",
+      "tag": "camera"
+    },
+    {
+      "phrase": "overcrank",
+      "tag": "camera"
+    },
+    {
+      "phrase": "polarizer",
+      "tag": "camera"
+    },
+    {
+      "phrase": "pov shot",
+      "tag": "camera"
+    },
+    {
+      "phrase": "prime lens",
+      "tag": "camera"
+    },
+    {
+      "phrase": "probe lens",
+      "tag": "camera"
+    },
+    {
+      "phrase": "pull focus",
+      "tag": "camera"
+    },
+    {
+      "phrase": "pull out",
+      "tag": "camera"
+    },
+    {
+      "phrase": "push in",
+      "tag": "camera"
+    },
+    {
+      "phrase": "rack focus",
+      "tag": "camera"
+    },
+    {
+      "phrase": "ramping",
+      "tag": "camera"
+    },
+    {
+      "phrase": "reaction shot",
+      "tag": "camera"
+    },
+    {
+      "phrase": "reverse angle",
+      "tag": "camera"
+    },
+    {
+      "phrase": "rule of thirds",
+      "tag": "camera"
+    },
+    {
+      "phrase": "russian arm",
+      "tag": "camera"
+    },
+    {
+      "phrase": "shallow focus",
+      "tag": "camera"
+    },
+    {
+      "phrase": "shot size",
+      "tag": "camera"
+    },
+    {
+      "phrase": "shutter angle",
+      "tag": "camera"
+    },
+    {
+      "phrase": "slider",
+      "tag": "camera"
+    },
+    {
+      "phrase": "slow motion",
+      "tag": "camera"
+    },
+    {
+      "phrase": "snorricam",
+      "tag": "camera"
+    },
+    {
+      "phrase": "speed ramp",
+      "tag": "camera"
+    },
+    {
+      "phrase": "steadicam",
+      "tag": "camera"
+    },
+    {
+      "phrase": "super 35",
+      "tag": "camera"
+    },
+    {
+      "phrase": "t-stop",
+      "tag": "camera"
+    },
+    {
+      "phrase": "techno crane",
+      "tag": "camera"
+    },
+    {
+      "phrase": "telephoto",
+      "tag": "camera"
+    },
+    {
+      "phrase": "time-lapse",
+      "tag": "camera"
+    },
+    {
+      "phrase": "tracking shot",
+      "tag": "camera"
+    },
+    {
+      "phrase": "two-shot",
+      "tag": "camera"
+    },
+    {
+      "phrase": "undercrank",
+      "tag": "camera"
+    },
+    {
+      "phrase": "vertigo effect",
+      "tag": "camera"
+    },
+    {
+      "phrase": "whip pan",
+      "tag": "camera"
+    },
+    {
+      "phrase": "white balance",
+      "tag": "camera"
+    },
+    {
+      "phrase": "wide lens",
+      "tag": "camera"
+    },
+    {
+      "phrase": "wide shot",
+      "tag": "camera"
+    },
+    {
+      "phrase": "zoom lens",
+      "tag": "camera"
+    },
+    {
+      "phrase": "abby singer",
+      "tag": "crew"
+    },
+    {
+      "phrase": "acting coach",
+      "tag": "crew"
+    },
+    {
+      "phrase": "and cut",
+      "tag": "crew"
+    },
+    {
+      "phrase": "animal wrangler",
+      "tag": "crew"
+    },
+    {
+      "phrase": "armorer",
+      "tag": "crew"
+    },
+    {
+      "phrase": "art director",
+      "tag": "crew"
+    },
+    {
+      "phrase": "assistant director",
+      "tag": "crew"
+    },
+    {
+      "phrase": "assistant editor",
+      "tag": "crew"
+    },
+    {
+      "phrase": "back to one",
+      "tag": "crew"
+    },
+    {
+      "phrase": "background action",
+      "tag": "crew"
+    },
+    {
+      "phrase": "background casting director",
+      "tag": "crew"
+    },
+    {
+      "phrase": "best boy",
+      "tag": "crew"
+    },
+    {
+      "phrase": "blown take",
+      "tag": "crew"
+    },
+    {
+      "phrase": "bogey",
+      "tag": "crew"
+    },
+    {
+      "phrase": "boom operator",
+      "tag": "crew"
+    },
+    {
+      "phrase": "buff it",
+      "tag": "crew"
+    },
+    {
+      "phrase": "burning daylight",
+      "tag": "crew"
+    },
+    {
+      "phrase": "camera operator",
+      "tag": "crew"
+    },
+    {
+      "phrase": "camera reload",
+      "tag": "crew"
+    },
+    {
+      "phrase": "casting director",
+      "tag": "crew"
+    },
+    {
+      "phrase": "cheat it",
+      "tag": "crew"
+    },
+    {
+      "phrase": "cheat left",
+      "tag": "crew"
+    },
+    {
+      "phrase": "cheat right",
+      "tag": "crew"
+    },
+    {
+      "phrase": "checking the gate",
+      "tag": "crew"
+    },
+    {
+      "phrase": "child wrangler",
+      "tag": "crew"
+    },
+    {
+      "phrase": "cinematographer",
+      "tag": "crew"
+    },
+    {
+      "phrase": "circle take",
+      "tag": "crew"
+    },
+    {
+      "phrase": "clear frame",
+      "tag": "crew"
+    },
+    {
+      "phrase": "clear the frame",
+      "tag": "crew"
+    },
+    {
+      "phrase": "colorist",
+      "tag": "crew"
+    },
+    {
+      "phrase": "coming through",
+      "tag": "crew"
+    },
+    {
+      "phrase": "company move",
+      "tag": "crew"
+    },
+    {
+      "phrase": "construction coordinator",
+      "tag": "crew"
+    },
+    {
+      "phrase": "continuity supervisor",
+      "tag": "crew"
+    },
+    {
+      "phrase": "data wrangler",
+      "tag": "crew"
+    },
+    {
+      "phrase": "department head",
+      "tag": "crew"
+    },
+    {
+      "phrase": "dialect coach",
+      "tag": "crew"
+    },
+    {
+      "phrase": "director of photography",
+      "tag": "crew"
+    },
+    {
+      "phrase": "dit",
+      "tag": "crew"
+    },
+    {
+      "phrase": "dolly grip",
+      "tag": "crew"
+    },
+    {
+      "phrase": "dp",
+      "tag": "crew"
+    },
+    {
+      "phrase": "executive producer",
+      "tag": "crew"
+    },
+    {
+      "phrase": "eyes on",
+      "tag": "crew"
+    },
+    {
+      "phrase": "false start",
+      "tag": "crew"
+    },
+    {
+      "phrase": "final checks",
+      "tag": "crew"
+    },
+    {
+      "phrase": "first ac",
+      "tag": "crew"
+    },
+    {
+      "phrase": "first ad",
+      "tag": "crew"
+    },
+    {
+      "phrase": "first team",
+      "tag": "crew"
+    },
+    {
+      "phrase": "first unit",
+      "tag": "crew"
+    },
+    {
+      "phrase": "flub",
+      "tag": "crew"
+    },
+    {
+      "phrase": "focus puller",
+      "tag": "crew"
+    },
+    {
+      "phrase": "french hours",
+      "tag": "crew"
+    },
+    {
+      "phrase": "gaffer",
+      "tag": "crew"
+    },
+    {
+      "phrase": "generator operator",
+      "tag": "crew"
+    },
+    {
+      "phrase": "going again",
+      "tag": "crew"
+    },
+    {
+      "phrase": "greensperson",
+      "tag": "crew"
+    },
+    {
+      "phrase": "hair stylist",
+      "tag": "crew"
+    },
+    {
+      "phrase": "hit your mark",
+      "tag": "crew"
+    },
+    {
+      "phrase": "hold for picture",
+      "tag": "crew"
+    },
+    {
+      "phrase": "hold for sound",
+      "tag": "crew"
+    },
+    {
+      "phrase": "hot set",
+      "tag": "crew"
+    },
+    {
+      "phrase": "hurry up and wait",
+      "tag": "crew"
+    },
+    {
+      "phrase": "intimacy coordinator",
+      "tag": "crew"
+    },
+    {
+      "phrase": "key grip",
+      "tag": "crew"
+    },
+    {
+      "phrase": "key hair stylist",
+      "tag": "crew"
+    },
+    {
+      "phrase": "key makeup artist",
+      "tag": "crew"
+    },
+    {
+      "phrase": "kill the baby",
+      "tag": "crew"
+    },
+    {
+      "phrase": "last looks",
+      "tag": "crew"
+    },
+    {
+      "phrase": "line producer",
+      "tag": "crew"
+    },
+    {
+      "phrase": "location manager",
+      "tag": "crew"
+    },
+    {
+      "phrase": "lock it up",
+      "tag": "crew"
+    },
+    {
+      "phrase": "losing the light",
+      "tag": "crew"
+    },
+    {
+      "phrase": "makeup artist",
+      "tag": "crew"
+    },
+    {
+      "phrase": "martini shot",
+      "tag": "crew"
+    },
+    {
+      "phrase": "milk it",
+      "tag": "crew"
+    },
+    {
+      "phrase": "mos",
+      "tag": "crew"
+    },
+    {
+      "phrase": "moving on",
+      "tag": "crew"
+    },
+    {
+      "phrase": "music supervisor",
+      "tag": "crew"
+    },
+    {
+      "phrase": "on a bell",
+      "tag": "crew"
+    },
+    {
+      "phrase": "one more for safety",
+      "tag": "crew"
+    },
+    {
+      "phrase": "pickup shot",
+      "tag": "crew"
+    },
+    {
+      "phrase": "picture wrap",
+      "tag": "crew"
+    },
+    {
+      "phrase": "picture's up",
+      "tag": "crew"
+    },
+    {
+      "phrase": "playback operator",
+      "tag": "crew"
+    },
+    {
+      "phrase": "print it",
+      "tag": "crew"
+    },
+    {
+      "phrase": "production assistant",
+      "tag": "crew"
+    },
+    {
+      "phrase": "production designer",
+      "tag": "crew"
+    },
+    {
+      "phrase": "production manager",
+      "tag": "crew"
+    },
+    {
+      "phrase": "prop master",
+      "tag": "crew"
+    },
+    {
+      "phrase": "quiet on set",
+      "tag": "crew"
+    },
+    {
+      "phrase": "re-recording mixer",
+      "tag": "crew"
+    },
+    {
+      "phrase": "rigging gaffer",
+      "tag": "crew"
+    },
+    {
+      "phrase": "rigging grip",
+      "tag": "crew"
+    },
+    {
+      "phrase": "room tone",
+      "tag": "crew"
+    },
+    {
+      "phrase": "safety take",
+      "tag": "crew"
+    },
+    {
+      "phrase": "script supervisor",
+      "tag": "crew"
+    },
+    {
+      "phrase": "second ac",
+      "tag": "crew"
+    },
+    {
+      "phrase": "second ad",
+      "tag": "crew"
+    },
+    {
+      "phrase": "second meal",
+      "tag": "crew"
+    },
+    {
+      "phrase": "second second ad",
+      "tag": "crew"
+    },
+    {
+      "phrase": "second sticks",
+      "tag": "crew"
+    },
+    {
+      "phrase": "second team",
+      "tag": "crew"
+    },
+    {
+      "phrase": "second unit",
+      "tag": "crew"
+    },
+    {
+      "phrase": "second unit director",
+      "tag": "crew"
+    },
+    {
+      "phrase": "sell it",
+      "tag": "crew"
+    },
+    {
+      "phrase": "set decorator",
+      "tag": "crew"
+    },
+    {
+      "phrase": "set medic",
+      "tag": "crew"
+    },
+    {
+      "phrase": "short end",
+      "tag": "crew"
+    },
+    {
+      "phrase": "showrunner",
+      "tag": "crew"
+    },
+    {
+      "phrase": "soft sticks",
+      "tag": "crew"
+    },
+    {
+      "phrase": "sound mixer",
+      "tag": "crew"
+    },
+    {
+      "phrase": "special effects supervisor",
+      "tag": "crew"
+    },
+    {
+      "phrase": "still photographer",
+      "tag": "crew"
+    },
+    {
+      "phrase": "swing gang",
+      "tag": "crew"
+    },
+    {
+      "phrase": "tail slate",
+      "tag": "crew"
+    },
+    {
+      "phrase": "teamster",
+      "tag": "crew"
+    },
+    {
+      "phrase": "that's a wrap",
+      "tag": "crew"
+    },
+    {
+      "phrase": "transportation coordinator",
+      "tag": "crew"
+    },
+    {
+      "phrase": "unit production manager",
+      "tag": "crew"
+    },
+    {
+      "phrase": "unit publicist",
+      "tag": "crew"
+    },
+    {
+      "phrase": "video assist operator",
+      "tag": "crew"
+    },
+    {
+      "phrase": "visual effects supervisor",
+      "tag": "crew"
+    },
+    {
+      "phrase": "watch your back",
+      "tag": "crew"
+    },
+    {
+      "phrase": "wild line",
+      "tag": "crew"
+    },
+    {
+      "phrase": "wild sound",
+      "tag": "crew"
+    },
+    {
+      "phrase": "first draft",
+      "tag": "draft"
+    },
+    {
+      "phrase": "rough draft",
+      "tag": "draft"
+    },
+    {
+      "phrase": "spec script",
+      "tag": "draft"
+    },
+    {
+      "phrase": "ext",
+      "tag": "exterior"
+    },
+    {
+      "phrase": "exterior",
+      "tag": "exterior"
+    },
+    {
+      "phrase": "final draft",
+      "tag": "final"
+    },
+    {
+      "phrase": "locked cut",
+      "tag": "final"
+    },
+    {
+      "phrase": "shooting script",
+      "tag": "final"
+    },
+    {
+      "phrase": "int",
+      "tag": "interior"
+    },
+    {
+      "phrase": "interior",
+      "tag": "interior"
+    },
+    {
+      "phrase": "adr",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "apple box",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "backlight",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "balloon light",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "barn doors",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "bead board",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "book light",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "boom mic",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "boom pole",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "c-stand",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "catchlight",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "chimera",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "china ball",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "comtek",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "cucoloris",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "day-for-night",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "daylight balanced",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "dead cat",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "dead wombat",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "dialogue edit",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "diegetic",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "diffusion",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "dolby atmos",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "egg crate",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "eye light",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "fill light",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "foam core",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "foley",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "fresnel",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "gobo",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "grid cloth",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "hard light",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "high key",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "hmi",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "ifb",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "iso track",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "key light",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "kino",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "kino flo",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "lav mic",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "lavalier",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "led panel",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "lens flare",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "looping",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "low key",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "motivated lighting",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "multitrack",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "muslin",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "nd gel",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "negative fill",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "noise floor",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "non-diegetic",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "overexposed",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "phantom power",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "plant mic",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "pop filter",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "production sound",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "reference tone",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "rim light",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "room tone",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "sandbag",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "scratch track",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "scrim",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "sfx",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "shiny board",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "shotgun mic",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "slate clap",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "snoot",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "soft light",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "softbox",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "sound bag",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "sound design",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "sound effects",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "sound mix",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "source music",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "space light",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "sweetening",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "sync sound",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "temp track",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "three-point lighting",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "timecode",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "tube light",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "tungsten",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "underexposed",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "underscore",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "wild track",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "wind protection",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "wireless mic",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "zeppelin",
+      "tag": "lighting"
+    },
+    {
+      "phrase": "acapella",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "assistant engineer",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "automation",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "autotune",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "beatmaker",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "bit depth",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "co-producer",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "compressor",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "daw",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "de-esser",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "distortion",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "dither",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "drum machine",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "equalization",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "executive producer",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "fader",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "flanger",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "gain staging",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "headroom",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "limiter",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "loudness war",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "lufs",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "mastering engineer",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "melodyne",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "midi",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "mix engineer",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "mixdown",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "mixing board",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "mono",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "one-shot",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "outboard gear",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "panning",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "pitch correction",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "plugin",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "preamp",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "pro tools",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "quantize",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "recording engineer",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "reference track",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "reverb",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "sample rate",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "sampler",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "saturation",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "sequencer",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "sidechain",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "signal chain",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "soft synth",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "stereo image",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "synth",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "vocal chop",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "vst",
+      "tag": "mixing"
+    },
+    {
+      "phrase": "artist manager",
+      "tag": "music"
+    },
+    {
+      "phrase": "artists and repertoire",
+      "tag": "music"
+    },
+    {
+      "phrase": "backing vocalist",
+      "tag": "music"
+    },
+    {
+      "phrase": "booking agent",
+      "tag": "music"
+    },
+    {
+      "phrase": "business manager",
+      "tag": "music"
+    },
+    {
+      "phrase": "collaborator",
+      "tag": "music"
+    },
+    {
+      "phrase": "disc jockey",
+      "tag": "music"
+    },
+    {
+      "phrase": "drum tech",
+      "tag": "music"
+    },
+    {
+      "phrase": "featured artist",
+      "tag": "music"
+    },
+    {
+      "phrase": "foh engineer",
+      "tag": "music"
+    },
+    {
+      "phrase": "frontperson",
+      "tag": "music"
+    },
+    {
+      "phrase": "guitar tech",
+      "tag": "music"
+    },
+    {
+      "phrase": "hype man",
+      "tag": "music"
+    },
+    {
+      "phrase": "instrumentalist",
+      "tag": "music"
+    },
+    {
+      "phrase": "lead singer",
+      "tag": "music"
+    },
+    {
+      "phrase": "leitmotif",
+      "tag": "music"
+    },
+    {
+      "phrase": "lighting designer",
+      "tag": "music"
+    },
+    {
+      "phrase": "master use license",
+      "tag": "music"
+    },
+    {
+      "phrase": "merch person",
+      "tag": "music"
+    },
+    {
+      "phrase": "midi mockup",
+      "tag": "music"
+    },
+    {
+      "phrase": "monitor engineer",
+      "tag": "music"
+    },
+    {
+      "phrase": "music cue",
+      "tag": "music"
+    },
+    {
+      "phrase": "musical stinger",
+      "tag": "music"
+    },
+    {
+      "phrase": "needle drop",
+      "tag": "music"
+    },
+    {
+      "phrase": "orchestration",
+      "tag": "music"
+    },
+    {
+      "phrase": "promoter",
+      "tag": "music"
+    },
+    {
+      "phrase": "publicist",
+      "tag": "music"
+    },
+    {
+      "phrase": "radio plugger",
+      "tag": "music"
+    },
+    {
+      "phrase": "road manager",
+      "tag": "music"
+    },
+    {
+      "phrase": "roadie",
+      "tag": "music"
+    },
+    {
+      "phrase": "score mix",
+      "tag": "music"
+    },
+    {
+      "phrase": "selector",
+      "tag": "music"
+    },
+    {
+      "phrase": "sideman",
+      "tag": "music"
+    },
+    {
+      "phrase": "solo artist",
+      "tag": "music"
+    },
+    {
+      "phrase": "source cue",
+      "tag": "music"
+    },
+    {
+      "phrase": "spotting session",
+      "tag": "music"
+    },
+    {
+      "phrase": "stage manager",
+      "tag": "music"
+    },
+    {
+      "phrase": "sync license",
+      "tag": "music"
+    },
+    {
+      "phrase": "temp score",
+      "tag": "music"
+    },
+    {
+      "phrase": "tour manager",
+      "tag": "music"
+    },
+    {
+      "phrase": "touring musician",
+      "tag": "music"
+    },
+    {
+      "phrase": "underscore",
+      "tag": "music"
+    },
+    {
+      "phrase": "vocalist",
+      "tag": "music"
+    },
+    {
+      "phrase": "night exterior",
+      "tag": "night"
+    },
+    {
+      "phrase": "night shoot",
+      "tag": "night"
+    },
+    {
+      "phrase": "nighttime",
+      "tag": "night"
+    },
+    {
+      "phrase": "a-roll",
+      "tag": "post"
+    },
+    {
+      "phrase": "aaf",
+      "tag": "post"
+    },
+    {
+      "phrase": "b-roll",
+      "tag": "post"
+    },
+    {
+      "phrase": "bitrate",
+      "tag": "post"
+    },
+    {
+      "phrase": "blue screen",
+      "tag": "post"
+    },
+    {
+      "phrase": "broadcast master",
+      "tag": "post"
+    },
+    {
+      "phrase": "burn-in",
+      "tag": "post"
+    },
+    {
+      "phrase": "cgi",
+      "tag": "post"
+    },
+    {
+      "phrase": "chroma key",
+      "tag": "post"
+    },
+    {
+      "phrase": "clean plate",
+      "tag": "post"
+    },
+    {
+      "phrase": "closed captions",
+      "tag": "post"
+    },
+    {
+      "phrase": "codec",
+      "tag": "post"
+    },
+    {
+      "phrase": "color correction",
+      "tag": "post"
+    },
+    {
+      "phrase": "color grading",
+      "tag": "post"
+    },
+    {
+      "phrase": "color space",
+      "tag": "post"
+    },
+    {
+      "phrase": "compositing",
+      "tag": "post"
+    },
+    {
+      "phrase": "cross-cutting",
+      "tag": "post"
+    },
+    {
+      "phrase": "dcp",
+      "tag": "post"
+    },
+    {
+      "phrase": "deliverables",
+      "tag": "post"
+    },
+    {
+      "phrase": "denoise",
+      "tag": "post"
+    },
+    {
+      "phrase": "digital intermediate",
+      "tag": "post"
+    },
+    {
+      "phrase": "dolby vision",
+      "tag": "post"
+    },
+    {
+      "phrase": "drop frame",
+      "tag": "post"
+    },
+    {
+      "phrase": "edl",
+      "tag": "post"
+    },
+    {
+      "phrase": "final mix",
+      "tag": "post"
+    },
+    {
+      "phrase": "fine cut",
+      "tag": "post"
+    },
+    {
+      "phrase": "frame rate",
+      "tag": "post"
+    },
+    {
+      "phrase": "green screen",
+      "tag": "post"
+    },
+    {
+      "phrase": "hdr",
+      "tag": "post"
+    },
+    {
+      "phrase": "imf",
+      "tag": "post"
+    },
+    {
+      "phrase": "j-cut",
+      "tag": "post"
+    },
+    {
+      "phrase": "jump cut",
+      "tag": "post"
+    },
+    {
+      "phrase": "l-cut",
+      "tag": "post"
+    },
+    {
+      "phrase": "lut",
+      "tag": "post"
+    },
+    {
+      "phrase": "m&e track",
+      "tag": "post"
+    },
+    {
+      "phrase": "match move",
+      "tag": "post"
+    },
+    {
+      "phrase": "matte",
+      "tag": "post"
+    },
+    {
+      "phrase": "motion tracking",
+      "tag": "post"
+    },
+    {
+      "phrase": "non-drop frame",
+      "tag": "post"
+    },
+    {
+      "phrase": "offline edit",
+      "tag": "post"
+    },
+    {
+      "phrase": "omf",
+      "tag": "post"
+    },
+    {
+      "phrase": "online edit",
+      "tag": "post"
+    },
+    {
+      "phrase": "paint-out",
+      "tag": "post"
+    },
+    {
+      "phrase": "parallel editing",
+      "tag": "post"
+    },
+    {
+      "phrase": "picture lock",
+      "tag": "post"
+    },
+    {
+      "phrase": "postviz",
+      "tag": "post"
+    },
+    {
+      "phrase": "previz",
+      "tag": "post"
+    },
+    {
+      "phrase": "prores",
+      "tag": "post"
+    },
+    {
+      "phrase": "qc",
+      "tag": "post"
+    },
+    {
+      "phrase": "retiming",
+      "tag": "post"
+    },
+    {
+      "phrase": "rotoscoping",
+      "tag": "post"
+    },
+    {
+      "phrase": "set extension",
+      "tag": "post"
+    },
+    {
+      "phrase": "splice",
+      "tag": "post"
+    },
+    {
+      "phrase": "spotting session",
+      "tag": "post"
+    },
+    {
+      "phrase": "stabilization",
+      "tag": "post"
+    },
+    {
+      "phrase": "streaming master",
+      "tag": "post"
+    },
+    {
+      "phrase": "subtitles",
+      "tag": "post"
+    },
+    {
+      "phrase": "temp mix",
+      "tag": "post"
+    },
+    {
+      "phrase": "timeline",
+      "tag": "post"
+    },
+    {
+      "phrase": "transcode",
+      "tag": "post"
+    },
+    {
+      "phrase": "vfx",
+      "tag": "post"
+    },
+    {
+      "phrase": "wire removal",
+      "tag": "post"
+    },
+    {
+      "phrase": "above-the-line",
+      "tag": "production"
+    },
+    {
+      "phrase": "arthouse",
+      "tag": "production"
+    },
+    {
+      "phrase": "assembly cut",
+      "tag": "production"
+    },
+    {
+      "phrase": "back nine",
+      "tag": "production"
+    },
+    {
+      "phrase": "below-the-line",
+      "tag": "production"
+    },
+    {
+      "phrase": "catalog title",
+      "tag": "production"
+    },
+    {
+      "phrase": "chain of title",
+      "tag": "production"
+    },
+    {
+      "phrase": "co-production",
+      "tag": "production"
+    },
+    {
+      "phrase": "dailies",
+      "tag": "production"
+    },
+    {
+      "phrase": "director's cut",
+      "tag": "production"
+    },
+    {
+      "phrase": "e&o insurance",
+      "tag": "production"
+    },
+    {
+      "phrase": "errors and omissions",
+      "tag": "production"
+    },
+    {
+      "phrase": "festival cut",
+      "tag": "production"
+    },
+    {
+      "phrase": "final cut",
+      "tag": "production"
+    },
+    {
+      "phrase": "first-look deal",
+      "tag": "production"
+    },
+    {
+      "phrase": "front nine",
+      "tag": "production"
+    },
+    {
+      "phrase": "greenlight",
+      "tag": "production"
+    },
+    {
+      "phrase": "housekeeping deal",
+      "tag": "production"
+    },
+    {
+      "phrase": "indie",
+      "tag": "production"
+    },
+    {
+      "phrase": "intellectual property",
+      "tag": "production"
+    },
+    {
+      "phrase": "library title",
+      "tag": "production"
+    },
+    {
+      "phrase": "limited series",
+      "tag": "production"
+    },
+    {
+      "phrase": "locked cut",
+      "tag": "production"
+    },
+    {
+      "phrase": "optioned",
+      "tag": "production"
+    },
+    {
+      "phrase": "overall deal",
+      "tag": "production"
+    },
+    {
+      "phrase": "post-production",
+      "tag": "production"
+    },
+    {
+      "phrase": "pre-production",
+      "tag": "production"
+    },
+    {
+      "phrase": "principal photography",
+      "tag": "production"
+    },
+    {
+      "phrase": "production notes",
+      "tag": "production"
+    },
+    {
+      "phrase": "production schedule",
+      "tag": "production"
+    },
+    {
+      "phrase": "put pilot",
+      "tag": "production"
+    },
+    {
+      "phrase": "rebate",
+      "tag": "production"
+    },
+    {
+      "phrase": "reboot",
+      "tag": "production"
+    },
+    {
+      "phrase": "reshoot",
+      "tag": "production"
+    },
+    {
+      "phrase": "residuals",
+      "tag": "production"
+    },
+    {
+      "phrase": "rough cut",
+      "tag": "production"
+    },
+    {
+      "phrase": "script notes",
+      "tag": "production"
+    },
+    {
+      "phrase": "series order",
+      "tag": "production"
+    },
+    {
+      "phrase": "shoot day",
+      "tag": "production"
+    },
+    {
+      "phrase": "shooting schedule",
+      "tag": "production"
+    },
+    {
+      "phrase": "short film",
+      "tag": "production"
+    },
+    {
+      "phrase": "soft prep",
+      "tag": "production"
+    },
+    {
+      "phrase": "straight-to-series",
+      "tag": "production"
+    },
+    {
+      "phrase": "studio picture",
+      "tag": "production"
+    },
+    {
+      "phrase": "tax credit",
+      "tag": "production"
+    },
+    {
+      "phrase": "tax incentive",
+      "tag": "production"
+    },
+    {
+      "phrase": "tentpole",
+      "tag": "production"
+    },
+    {
+      "phrase": "test screening",
+      "tag": "production"
+    },
+    {
+      "phrase": "top sheet",
+      "tag": "production"
+    },
+    {
+      "phrase": "underlying rights",
+      "tag": "production"
+    },
+    {
+      "phrase": "work-for-hire",
+      "tag": "production"
+    },
+    {
+      "phrase": "album cycle",
+      "tag": "promo"
+    },
+    {
+      "phrase": "album-equivalent units",
+      "tag": "promo"
+    },
+    {
+      "phrase": "billboard 200",
+      "tag": "promo"
+    },
+    {
+      "phrase": "certification",
+      "tag": "promo"
+    },
+    {
+      "phrase": "charting",
+      "tag": "promo"
+    },
+    {
+      "phrase": "crossover",
+      "tag": "promo"
+    },
+    {
+      "phrase": "first week",
+      "tag": "promo"
+    },
+    {
+      "phrase": "going viral",
+      "tag": "promo"
+    },
+    {
+      "phrase": "heavy rotation",
+      "tag": "promo"
+    },
+    {
+      "phrase": "hot 100",
+      "tag": "promo"
+    },
+    {
+      "phrase": "number one",
+      "tag": "promo"
+    },
+    {
+      "phrase": "payola",
+      "tag": "promo"
+    },
+    {
+      "phrase": "radio add",
+      "tag": "promo"
+    },
+    {
+      "phrase": "radio format",
+      "tag": "promo"
+    },
+    {
+      "phrase": "riaa",
+      "tag": "promo"
+    },
+    {
+      "phrase": "rollout",
+      "tag": "promo"
+    },
+    {
+      "phrase": "sales week",
+      "tag": "promo"
+    },
+    {
+      "phrase": "single cycle",
+      "tag": "promo"
+    },
+    {
+      "phrase": "streaming equivalent",
+      "tag": "promo"
+    },
+    {
+      "phrase": "sync placement",
+      "tag": "promo"
+    },
+    {
+      "phrase": "track equivalent",
+      "tag": "promo"
+    },
+    {
+      "phrase": "cue cards",
+      "tag": "prompter"
+    },
+    {
+      "phrase": "prompter",
+      "tag": "prompter"
+    },
+    {
+      "phrase": "teleprompter",
+      "tag": "prompter"
+    },
+    {
+      "phrase": "admin deal",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "ascap",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "bmi",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "co-publishing",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "compulsory license",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "harry fox agency",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "interpolation clearance",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "master use license",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "mechanical license",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "mechanical royalties",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "mechanicals",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "music publisher",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "neighboring rights",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "performance royalties",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "performing rights organization",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "prs",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "public domain",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "publisher's share",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "publishing deal",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "publishing split",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "sample clearance",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "sesac",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "songwriter royalties",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "soundexchange",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "split sheet",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "statutory rate",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "sub-publishing",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "sync license",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "work for hire",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "writer's share",
+      "tag": "publishing"
+    },
+    {
+      "phrase": "anniversary edition",
+      "tag": "release"
+    },
+    {
+      "phrase": "bootleg",
+      "tag": "release"
+    },
+    {
+      "phrase": "box set",
+      "tag": "release"
+    },
+    {
+      "phrase": "clean version",
+      "tag": "release"
+    },
+    {
+      "phrase": "compilation",
+      "tag": "release"
+    },
+    {
+      "phrase": "concept album",
+      "tag": "release"
+    },
+    {
+      "phrase": "double album",
+      "tag": "release"
+    },
+    {
+      "phrase": "double single",
+      "tag": "release"
+    },
+    {
+      "phrase": "explicit version",
+      "tag": "release"
+    },
+    {
+      "phrase": "extended mix",
+      "tag": "release"
+    },
+    {
+      "phrase": "greatest hits",
+      "tag": "release"
+    },
+    {
+      "phrase": "live album",
+      "tag": "release"
+    },
+    {
+      "phrase": "radio edit",
+      "tag": "release"
+    },
+    {
+      "phrase": "remaster",
+      "tag": "release"
+    },
+    {
+      "phrase": "remix",
+      "tag": "release"
+    },
+    {
+      "phrase": "blue pages",
+      "tag": "revision"
+    },
+    {
+      "phrase": "pink pages",
+      "tag": "revision"
+    },
+    {
+      "phrase": "punch-up",
+      "tag": "revision"
+    },
+    {
+      "phrase": "revised pages",
+      "tag": "revision"
+    },
+    {
+      "phrase": "rewrite",
+      "tag": "revision"
+    },
+    {
+      "phrase": "a-story",
+      "tag": "script"
+    },
+    {
+      "phrase": "action line",
+      "tag": "script"
+    },
+    {
+      "phrase": "b-story",
+      "tag": "script"
+    },
+    {
+      "phrase": "beat sheet",
+      "tag": "script"
+    },
+    {
+      "phrase": "c-story",
+      "tag": "script"
+    },
+    {
+      "phrase": "callback",
+      "tag": "script"
+    },
+    {
+      "phrase": "cliffhanger",
+      "tag": "script"
+    },
+    {
+      "phrase": "cold open",
+      "tag": "script"
+    },
+    {
+      "phrase": "cutaway",
+      "tag": "script"
+    },
+    {
+      "phrase": "fade in",
+      "tag": "script"
+    },
+    {
+      "phrase": "fade out",
+      "tag": "script"
+    },
+    {
+      "phrase": "flash-forward",
+      "tag": "script"
+    },
+    {
+      "phrase": "inciting incident",
+      "tag": "script"
+    },
+    {
+      "phrase": "intercut",
+      "tag": "script"
+    },
+    {
+      "phrase": "logline",
+      "tag": "script"
+    },
+    {
+      "phrase": "match cut",
+      "tag": "script"
+    },
+    {
+      "phrase": "montage",
+      "tag": "script"
+    },
+    {
+      "phrase": "non-canon",
+      "tag": "script"
+    },
+    {
+      "phrase": "plot twist",
+      "tag": "script"
+    },
+    {
+      "phrase": "retcon",
+      "tag": "script"
+    },
+    {
+      "phrase": "scene heading",
+      "tag": "script"
+    },
+    {
+      "phrase": "screenplay",
+      "tag": "script"
+    },
+    {
+      "phrase": "series bible",
+      "tag": "script"
+    },
+    {
+      "phrase": "show bible",
+      "tag": "script"
+    },
+    {
+      "phrase": "slugline",
+      "tag": "script"
+    },
+    {
+      "phrase": "smash cut",
+      "tag": "script"
+    },
+    {
+      "phrase": "subplot",
+      "tag": "script"
+    },
+    {
+      "phrase": "teleplay",
+      "tag": "script"
+    },
+    {
+      "phrase": "third act",
+      "tag": "script"
+    },
+    {
+      "phrase": "turning point",
+      "tag": "script"
+    },
+    {
+      "phrase": "voiceover",
+      "tag": "script"
+    },
+    {
+      "phrase": "bpm",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "chord progression",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "co-write",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "countermelody",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "earworm",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "interpolation",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "lyric",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "middle 8",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "modulation",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "pre-chorus",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "publishing demo",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "reharmonization",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "rhyme scheme",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "sample flip",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "songwriter",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "time signature",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "topline",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "topliner",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "writing camp",
+      "tag": "songwriting"
+    },
+    {
+      "phrase": "aggregator",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "algorithmic playlist",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "apple music",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "b-side",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "cd baby",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "deluxe edition",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "digital download",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "digital service provider",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "discover weekly",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "distrokid",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "dsp",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "editorial playlist",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "isrc",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "lead single",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "metadata",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "mixtape",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "on-demand",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "playlist",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "playlisting",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "pre-order",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "pre-save",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "promo single",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "reissue",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "release radar",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "spotify",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "tunecore",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "upc",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "waveform",
+      "tag": "streaming"
+    },
+    {
+      "phrase": "click track",
+      "tag": "studio"
+    },
+    {
+      "phrase": "comping",
+      "tag": "studio"
+    },
+    {
+      "phrase": "control room",
+      "tag": "studio"
+    },
+    {
+      "phrase": "cue mix",
+      "tag": "studio"
+    },
+    {
+      "phrase": "direct input",
+      "tag": "studio"
+    },
+    {
+      "phrase": "first-call musician",
+      "tag": "studio"
+    },
+    {
+      "phrase": "guide track",
+      "tag": "studio"
+    },
+    {
+      "phrase": "headphone mix",
+      "tag": "studio"
+    },
+    {
+      "phrase": "home studio",
+      "tag": "studio"
+    },
+    {
+      "phrase": "iso booth",
+      "tag": "studio"
+    },
+    {
+      "phrase": "lead sheet",
+      "tag": "studio"
+    },
+    {
+      "phrase": "live room",
+      "tag": "studio"
+    },
+    {
+      "phrase": "multitrack",
+      "tag": "studio"
+    },
+    {
+      "phrase": "one-take",
+      "tag": "studio"
+    },
+    {
+      "phrase": "overdub",
+      "tag": "studio"
+    },
+    {
+      "phrase": "pre-production",
+      "tag": "studio"
+    },
+    {
+      "phrase": "project studio",
+      "tag": "studio"
+    },
+    {
+      "phrase": "punch-in",
+      "tag": "studio"
+    },
+    {
+      "phrase": "reamp",
+      "tag": "studio"
+    },
+    {
+      "phrase": "recording studio",
+      "tag": "studio"
+    },
+    {
+      "phrase": "run-through",
+      "tag": "studio"
+    },
+    {
+      "phrase": "scratch vocal",
+      "tag": "studio"
+    },
+    {
+      "phrase": "session musician",
+      "tag": "studio"
+    },
+    {
+      "phrase": "session player",
+      "tag": "studio"
+    },
+    {
+      "phrase": "vocal booth",
+      "tag": "studio"
+    },
+    {
+      "phrase": "work tape",
+      "tag": "studio"
+    },
+    {
+      "phrase": "stunt coordinator",
+      "tag": "stunts"
+    },
+    {
+      "phrase": "stunt double",
+      "tag": "stunts"
+    },
+    {
+      "phrase": "stunt performer",
+      "tag": "stunts"
+    },
+    {
+      "phrase": "18-49",
+      "tag": "tv"
+    },
+    {
+      "phrase": "act break",
+      "tag": "tv"
+    },
+    {
+      "phrase": "backdoor pilot",
+      "tag": "tv"
+    },
+    {
+      "phrase": "based on",
+      "tag": "tv"
+    },
+    {
+      "phrase": "beat board",
+      "tag": "tv"
+    },
+    {
+      "phrase": "binge release",
+      "tag": "tv"
+    },
+    {
+      "phrase": "bottle episode",
+      "tag": "tv"
+    },
+    {
+      "phrase": "break the story",
+      "tag": "tv"
+    },
+    {
+      "phrase": "clip show",
+      "tag": "tv"
+    },
+    {
+      "phrase": "counterprogramming",
+      "tag": "tv"
+    },
+    {
+      "phrase": "created by",
+      "tag": "tv"
+    },
+    {
+      "phrase": "crossover",
+      "tag": "tv"
+    },
+    {
+      "phrase": "developed by",
+      "tag": "tv"
+    },
+    {
+      "phrase": "episodic",
+      "tag": "tv"
+    },
+    {
+      "phrase": "filler episode",
+      "tag": "tv"
+    },
+    {
+      "phrase": "laugh track",
+      "tag": "tv"
+    },
+    {
+      "phrase": "lead-in",
+      "tag": "tv"
+    },
+    {
+      "phrase": "live studio audience",
+      "tag": "tv"
+    },
+    {
+      "phrase": "midseason finale",
+      "tag": "tv"
+    },
+    {
+      "phrase": "mini-room",
+      "tag": "tv"
+    },
+    {
+      "phrase": "monster of the week",
+      "tag": "tv"
+    },
+    {
+      "phrase": "multi-cam",
+      "tag": "tv"
+    },
+    {
+      "phrase": "network notes",
+      "tag": "tv"
+    },
+    {
+      "phrase": "nielsen",
+      "tag": "tv"
+    },
+    {
+      "phrase": "pilot season",
+      "tag": "tv"
+    },
+    {
+      "phrase": "previously on",
+      "tag": "tv"
+    },
+    {
+      "phrase": "procedural",
+      "tag": "tv"
+    },
+    {
+      "phrase": "runtime",
+      "tag": "tv"
+    },
+    {
+      "phrase": "script coordinator",
+      "tag": "tv"
+    },
+    {
+      "phrase": "season finale",
+      "tag": "tv"
+    },
+    {
+      "phrase": "season premiere",
+      "tag": "tv"
+    },
+    {
+      "phrase": "serialized",
+      "tag": "tv"
+    },
+    {
+      "phrase": "series finale",
+      "tag": "tv"
+    },
+    {
+      "phrase": "series premiere",
+      "tag": "tv"
+    },
+    {
+      "phrase": "showrunner",
+      "tag": "tv"
+    },
+    {
+      "phrase": "single-cam",
+      "tag": "tv"
+    },
+    {
+      "phrase": "spin-off",
+      "tag": "tv"
+    },
+    {
+      "phrase": "staff writer",
+      "tag": "tv"
+    },
+    {
+      "phrase": "staffing season",
+      "tag": "tv"
+    },
+    {
+      "phrase": "standards and practices",
+      "tag": "tv"
+    },
+    {
+      "phrase": "story editor",
+      "tag": "tv"
+    },
+    {
+      "phrase": "syndication",
+      "tag": "tv"
+    },
+    {
+      "phrase": "upfronts",
+      "tag": "tv"
+    },
+    {
+      "phrase": "weekly drop",
+      "tag": "tv"
+    },
+    {
+      "phrase": "writers' room",
+      "tag": "tv"
+    },
+    {
+      "phrase": "cg element",
+      "tag": "vfx"
+    },
+    {
+      "phrase": "comp",
+      "tag": "vfx"
+    },
+    {
+      "phrase": "crowd replication",
+      "tag": "vfx"
+    },
+    {
+      "phrase": "crowd tiling",
+      "tag": "vfx"
+    },
+    {
+      "phrase": "digital double",
+      "tag": "vfx"
+    },
+    {
+      "phrase": "final render",
+      "tag": "vfx"
+    },
+    {
+      "phrase": "lidar scan",
+      "tag": "vfx"
+    },
+    {
+      "phrase": "matchmove",
+      "tag": "vfx"
+    },
+    {
+      "phrase": "particle sim",
+      "tag": "vfx"
+    },
+    {
+      "phrase": "photogrammetry",
+      "tag": "vfx"
+    },
+    {
+      "phrase": "roto",
+      "tag": "vfx"
+    },
+    {
+      "phrase": "techviz",
+      "tag": "vfx"
+    },
+    {
+      "phrase": "tracking markers",
+      "tag": "vfx"
+    },
+    {
+      "phrase": "witness points",
+      "tag": "vfx"
+    },
+    {
+      "phrase": "costume designer",
+      "tag": "wardrobe"
+    },
+    {
+      "phrase": "wardrobe supervisor",
+      "tag": "wardrobe"
+    }
   ]
 }
