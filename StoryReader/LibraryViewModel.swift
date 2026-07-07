@@ -334,10 +334,16 @@ final class LibraryViewModel: ObservableObject {
     }
 
     func addToUserDictionary(_ word: String) {
-        let w = SpellCheck.normalize(word)
-            .trimmingCharacters(in: .whitespaces)
-        guard !w.isEmpty else { return }
-        userDictionary.insert(w)
+        addWordsToUserDictionary([word])
+    }
+
+    /// Bulk add (used by Learn Words) — one save for the whole batch.
+    func addWordsToUserDictionary(_ words: [String]) {
+        let clean = words
+            .map { SpellCheck.normalize($0).trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+        guard !clean.isEmpty else { return }
+        userDictionary.formUnion(clean)
         let snapshot = userDictionary
         let store = self.store
         Task.detached(priority: .utility) { store.saveUserDictionary(snapshot) }

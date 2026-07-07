@@ -80,6 +80,23 @@ final class SpellCheck: @unchecked Sendable {
                            suggestions: suggestions(for: $0.key, user: user)) }
     }
 
+    /// Lightweight bulk scan: unknown word -> occurrence count for one text.
+    /// (No suggestions — far too slow across a whole library.)
+    func unknownCounts(in text: String, user: Set<String>) -> [String: Int] {
+        loadIfNeeded()
+        let norm = Self.normalize(text)
+        let ns = norm as NSString
+        var counts: [String: Int] = [:]
+        for m in Self.tokenRe.matches(in: norm,
+                                      range: NSRange(location: 0, length: ns.length)) {
+            let tok = ns.substring(with: m.range)
+            if !isKnown(tok, user: user) {
+                counts[tok, default: 0] += 1
+            }
+        }
+        return counts
+    }
+
     /// Known words within edit distance 1 (same-first-letter ones first).
     func suggestions(for word: String, user: Set<String>, limit: Int = 3) -> [String] {
         loadIfNeeded()

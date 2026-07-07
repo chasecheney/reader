@@ -4,6 +4,7 @@ struct SidebarView: View {
     @EnvironmentObject var vm: LibraryViewModel
     @State private var showDeleteConfirm = false
     @State private var showTagLibrary = false
+    @State private var showLearnWords = false
 
     var body: some View {
         List(selection: Binding<LibraryFilter?>(
@@ -49,6 +50,22 @@ struct SidebarView: View {
                     }
                 }
                 .help("Word/phrase → tag rules used to auto-tag stories on import")
+
+                Button {
+                    showLearnWords = true
+                } label: {
+                    HStack {
+                        Label("Learn Words…", systemImage: "text.book.closed")
+                        Spacer()
+                        if !vm.userDictionary.isEmpty {
+                            Text("\(vm.userDictionary.count)")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .monospacedDigit()
+                        }
+                    }
+                }
+                .help("Scan the library for unknown words and add them to your spelling dictionary in batches")
             }
 
             Section {
@@ -62,6 +79,10 @@ struct SidebarView: View {
         }
         .sheet(isPresented: $showTagLibrary) {
             TagLibraryView()
+                .environmentObject(vm)
+        }
+        .sheet(isPresented: $showLearnWords) {
+            BulkLearnView()
                 .environmentObject(vm)
         }
         .confirmationDialog(
