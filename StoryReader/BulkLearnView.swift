@@ -8,12 +8,9 @@ struct BulkLearnView: View {
     @EnvironmentObject var vm: LibraryViewModel
     @Environment(\.dismiss) private var dismiss
 
-    struct WordStat: Identifiable {
-        var id: String { word }
-        let word: String
-        let files: Int        // distinct stories containing it
-        let occurrences: Int
-    }
+    /// Pre-populated results (from an import's collected words); nil = offer
+    /// a full-library scan.
+    var preloaded: [WordStat]? = nil
 
     @State private var scanning = false
     @State private var scanDone = 0
@@ -71,6 +68,9 @@ struct BulkLearnView: View {
                     }
                 }
             }
+        }
+        .onAppear {
+            if let preloaded, stats.isEmpty { stats = preloaded }
         }
         .onDisappear { cancelScan() }
         #if os(macOS)

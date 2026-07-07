@@ -6,6 +6,14 @@ import SwiftUI
 /// so it ships with the app free of any license restrictions and already
 /// knows the library's slang, names, and contractions. Unknown words the
 /// user accepts go into a synced personal dictionary.
+/// One unknown word's library-wide footprint (Learn Words / import review).
+struct WordStat: Identifiable, Hashable, Sendable {
+    var id: String { word }
+    let word: String
+    let files: Int        // distinct stories containing it
+    let occurrences: Int
+}
+
 final class SpellCheck: @unchecked Sendable {
 
     static let shared = SpellCheck()

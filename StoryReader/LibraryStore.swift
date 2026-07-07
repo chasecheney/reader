@@ -215,7 +215,13 @@ final class LibraryStore: @unchecked Sendable {
 
     // MARK: - Importing
 
-    struct ImportResult { var imported = 0; var skipped = 0; var failed = 0; var tagged = 0 }
+    struct ImportResult {
+        var imported = 0; var skipped = 0; var failed = 0; var tagged = 0
+        /// Unknown-word footprint collected during import (word -> distinct
+        /// files / total occurrences). Filled when `collectUnknownWords`.
+        var unknownFiles: [String: Int] = [:]
+        var unknownOccurrences: [String: Int] = [:]
+    }
 
     /// Imports .txt files (or folders of them). Files are LZFSE-compressed
     /// into the library. Existing files are skipped.
@@ -224,6 +230,8 @@ final class LibraryStore: @unchecked Sendable {
     /// scanned with the Tag Library and matched tags (that aren't already in
     /// the filename) are saved into the story's synced custom-tag metadata.
     func importFiles(from urls: [URL], autoTagRules: [TagRule] = [],
+                     collectUnknownWords: Bool = false,
+                     userWords: Set<String> = [],
                      progress: @escaping (Int, Int) -> Void) -> ImportResult {
         guard let dir = storiesURL else { return ImportResult() }
         var result = ImportResult()
@@ -262,22 +270,33 @@ final class LibraryStore: @unchecked Sendable {
                             try packed.write(to: dest, options: .atomic)
                             result.imported += 1
 
-                            // Auto-tag from the Tag Library.
-                            if !matcher.isEmpty,
+                            // Text-based passes share one decode.
+                            if !matcher.isEmpty || collectUnknownWords,
                                let text = String(data: raw, encoding: .utf8)
                                        ?? String(data: raw, encoding: .isoLatin1) {
-                                let parsed = FilenameParser.parse(stem: f.lastPathComponent)
-                                let found = matcher.tags(in: text)
-                                    .subtracting(parsed.tags)   // filename tags already apply
-                                if !found.isEmpty {
-                                    let id = parsed.storyID ?? f.lastPathComponent
-                                    var state = states[id] ?? UserState()
-                                    let merged = Set(state.customTags).union(found)
-                                    if merged != Set(state.customTags) {
-                                        state.customTags = Array(merged).sorted()
-                                        states[id] = state
-                                        saveUserState(state, for: id)
-                                        result.tagged += 1
+                                // Auto-tag from the Tag Library.
+                                if !matcher.isEmpty {
+                                    let parsed = FilenameParser.parse(stem: f.lastPathComponent)
+                                    let found = matcher.tags(in: text)
+                                        .subtracting(parsed.tags)   // filename tags already apply
+                                    if !found.isEmpty {
+                                        let id = parsed.storyID ?? f.lastPathComponent
+                                        var state = states[id] ?? UserState()
+                                        let merged = Set(state.customTags).union(found)
+                                        if merged != Set(state.customTags) {
+                                            state.customTags = Array(merged).sorted()
+                                            states[id] = state
+                                            saveUserState(state, for: id)
+                                            result.tagged += 1
+                                        }
+                                    }
+                                }
+                                // Collect unknown words for post-import review.
+                                if collectUnknownWords {
+                                    for (w, n) in SpellCheck.shared
+                                        .unknownCounts(in: text, user: userWords) {
+                                        result.unknownFiles[w, default: 0] += 1
+                                        result.unknownOccurrences[w, default: 0] += n
                                     }
                                 }
                             }

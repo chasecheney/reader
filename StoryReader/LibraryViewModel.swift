@@ -35,6 +35,10 @@ final class LibraryViewModel: ObservableObject {
     /// Synced personal spelling dictionary (see SpellCheck).
     @Published private(set) var userDictionary: Set<String> = []
 
+    /// Unknown words collected during the last import, awaiting review
+    /// (presented as a pre-populated Learn Words sheet; nil = nothing pending).
+    @Published var pendingWordStats: [WordStat]?
+
     private var searchResults: Set<String>? = nil   // nil = no active search
     private var searchTask: Task<Void, Never>?
     private var userStates: [String: UserState] = [:]
@@ -351,7 +355,8 @@ final class LibraryViewModel: ObservableObject {
 
     // MARK: - Import
 
-    func importFiles(urls: [URL], autoTag: Bool = false) async {
+    func importFiles(urls: [URL], autoTag: Bool = false,
+                     collectWords: Bool = false) async {
         guard !busy else { return }
         busy = true
         statusText = "Importing…"
@@ -360,9 +365,12 @@ final class LibraryViewModel: ObservableObject {
 
         let store = self.store
         let rules = autoTag ? tagRules : []
+        let userWords = userDictionary
         let (progressStream, progressCont) = AsyncStream.makeStream(of: (Int, Int).self)
         let worker = Task.detached(priority: .userInitiated) {
-            let result = store.importFiles(from: urls, autoTagRules: rules) { done, total in
+            let result = store.importFiles(from: urls, autoTagRules: rules,
+                                           collectUnknownWords: collectWords,
+                                           userWords: userWords) { done, total in
                 progressCont.yield((done, total))
             }
             progressCont.finish()
@@ -380,6 +388,14 @@ final class LibraryViewModel: ObservableObject {
             errorMessage = "\(result.failed) files failed to import."
         } else if result.tagged > 0 {
             infoMessage = "Imported \(result.imported) stories. \(result.tagged) were auto-tagged from the Tag Library."
+        }
+        if !result.unknownFiles.isEmpty {
+            pendingWordStats = result.unknownFiles.map {
+                WordStat(word: $0.key, files: $0.value,
+                         occurrences: result.unknownOccurrences[$0.key] ?? 0)
+            }.sorted {
+                $0.files != $1.files ? $0.files > $1.files : $0.word < $1.word
+            }
         }
         await refresh()
     }

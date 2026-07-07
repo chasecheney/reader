@@ -46,10 +46,18 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $showImportOptions) {
-            ImportOptionsView(urls: pendingImportURLs) { urls, autoTag in
-                Task { await vm.importFiles(urls: urls, autoTag: autoTag) }
+            ImportOptionsView(urls: pendingImportURLs) { urls, autoTag, collectWords in
+                Task { await vm.importFiles(urls: urls, autoTag: autoTag,
+                                            collectWords: collectWords) }
             }
             .environmentObject(vm)
+        }
+        // Post-import spelling review: unknown words collected while importing.
+        .sheet(isPresented: Binding(
+            get: { vm.pendingWordStats != nil },
+            set: { if !$0 { vm.pendingWordStats = nil } })) {
+            BulkLearnView(preloaded: vm.pendingWordStats ?? [])
+                .environmentObject(vm)
         }
         .alert("Story Reader", isPresented: Binding(
             get: { vm.errorMessage != nil },
@@ -233,10 +241,11 @@ private struct ImportOptionsView: View {
     @Environment(\.dismiss) private var dismiss
 
     let urls: [URL]
-    let onImport: ([URL], Bool) -> Void
+    let onImport: ([URL], Bool, Bool) -> Void
 
     /// Remembered between imports.
     @AppStorage("autoTagOnImport") private var autoTag = true
+    @AppStorage("learnWordsOnImport") private var collectWords = true
 
     private var selectionSummary: String {
         if urls.count == 1 {
@@ -266,12 +275,21 @@ private struct ImportOptionsView: View {
             }
             .disabled(vm.tagRules.isEmpty)
 
+            Toggle(isOn: $collectWords) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Collect unknown words for spelling review")
+                    Text("After the import, review recurring names and slang and add them to your dictionary in one pass. Adds only a few percent to import time.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
             HStack {
                 Spacer()
                 Button("Cancel") { dismiss() }
                     .keyboardShortcut(.cancelAction)
                 Button("Import") {
-                    onImport(urls, autoTag && !vm.tagRules.isEmpty)
+                    onImport(urls, autoTag && !vm.tagRules.isEmpty, collectWords)
                     dismiss()
                 }
                 .keyboardShortcut(.defaultAction)
