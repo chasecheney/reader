@@ -9,17 +9,25 @@ struct StoryListView: View {
     @State private var expandedGroups: Set<String> = []
 
     var body: some View {
+        ScrollViewReader { proxy in
+            list(proxy: proxy)
+        }
+    }
+
+    private func list(proxy: ScrollViewProxy) -> some View {
         List(selection: $vm.selectedStoryStem) {
             ForEach(vm.groups) { group in
                 if group.stories.count == 1 {
                     StoryRow(story: group.stories[0], showPartTitle: false)
                         .tag(group.stories[0].stem)
+                        .id(group.stories[0].stem)
                         .contextMenu { menu(for: group.stories[0]) }
                 } else {
                     DisclosureGroup(isExpanded: isExpanded(group.id)) {
                         ForEach(group.stories) { story in
                             StoryRow(story: story, showPartTitle: true)
                                 .tag(story.stem)
+                                .id(story.stem)
                                 .contextMenu { menu(for: story) }
                         }
                     } label: {
@@ -71,6 +79,15 @@ struct StoryListView: View {
         .sheet(item: $seriesPickerStory) { story in
             SeriesPickerView(story: story)
         }
+        // Whenever the selection changes — reader part-navigation, next/prev
+        // series, search, or programmatic — make sure the selected story is
+        // actually visible: expand its series and scroll to it.
+        .onChange(of: vm.selectedStoryStem) { _, stem in
+            reveal(stem, proxy: proxy)
+        }
+        .onAppear {
+            reveal(vm.selectedStoryStem, proxy: proxy)
+        }
         #if os(iOS)
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
@@ -91,6 +108,23 @@ struct StoryListView: View {
             }
         }
         #endif
+    }
+
+    /// Expand the selected story's series (if collapsed) and scroll the row
+    /// into view. `anchor: nil` scrolls minimally, so clicking an
+    /// already-visible row never jolts the list.
+    private func reveal(_ stem: String?, proxy: ScrollViewProxy) {
+        guard let stem, let story = vm.stories[stem] else { return }
+        let key = story.effectiveSeriesKey
+        let wasCollapsed = !expandedGroups.contains(key)
+        if wasCollapsed {
+            withAnimation { _ = expandedGroups.insert(key) }
+        }
+        // If we just expanded, wait a tick so the disclosure's rows exist
+        // before scrolling to one of them.
+        DispatchQueue.main.asyncAfter(deadline: .now() + (wasCollapsed ? 0.3 : 0)) {
+            withAnimation { proxy.scrollTo(stem, anchor: nil) }
+        }
     }
 
     private func isExpanded(_ id: String) -> Binding<Bool> {
