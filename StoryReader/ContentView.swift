@@ -75,6 +75,14 @@ struct ContentView: View {
         } message: {
             Text(vm.infoMessage ?? "")
         }
+        // A .storybundle handed to the app (AirDrop "Open with", Files
+        // share sheet, Finder double-click) goes straight to the
+        // merge/replace step.
+        .onOpenURL { url in
+            if url.pathExtension.lowercased() == LibraryBundle.fileExtension {
+                pendingBundleURL = url
+            }
+        }
     }
 
     // MARK: - Split views
