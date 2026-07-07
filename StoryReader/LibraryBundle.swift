@@ -43,6 +43,10 @@ enum LibraryBundle {
         var generator: String = "Story Reader"
         var storyCount: Int = 0
         var entries: [ManifestEntry] = []
+        /// Optional: the exporter's personal spelling dictionary, so learned
+        /// words (names, slang) travel with the library. Old readers ignore
+        /// this key; old bundles simply don't have it.
+        var userDictionary: [String]? = nil
     }
 
     enum BundleError: LocalizedError {
@@ -76,6 +80,8 @@ enum LibraryBundle {
         var updated = 0
         var skipped = 0
         var failed = 0
+        /// Words merged into the local personal dictionary from the bundle.
+        var learnedWords = 0
     }
 
     // MARK: - Export
@@ -84,6 +90,7 @@ enum LibraryBundle {
     /// Files that are still un-downloaded iCloud placeholders are skipped
     /// (and counted), never silently lost.
     static func export(store: LibraryStore, to dest: URL,
+                       userWords: Set<String> = [],
                        progress: @escaping (Int, Int) -> Void) throws -> ExportResult {
         guard store.storiesURL != nil else { throw BundleError.libraryNotReady }
         let fm = FileManager.default
@@ -121,6 +128,9 @@ enum LibraryBundle {
         var manifest = BundleManifest()
         manifest.storyCount = entries.count
         manifest.entries = entries
+        if !userWords.isEmpty {
+            manifest.userDictionary = userWords.sorted()
+        }
 
         let enc = JSONEncoder()
         enc.dateEncodingStrategy = .iso8601
@@ -252,6 +262,16 @@ enum LibraryBundle {
                 }
             }
             if (i + 1) % 200 == 0 || i + 1 == total { progress(i + 1, total) }
+        }
+
+        // Merge the bundle's spelling dictionary (if any) into ours.
+        if let bundleWords = manifest.userDictionary, !bundleWords.isEmpty {
+            let mine = store.loadUserDictionary()
+            let merged = mine.union(bundleWords)
+            if merged.count > mine.count {
+                store.saveUserDictionary(merged)
+                result.learnedWords = merged.count - mine.count
+            }
         }
         return result
     }

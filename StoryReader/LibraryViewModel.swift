@@ -419,11 +419,13 @@ final class LibraryViewModel: ObservableObject {
         let dest = FileManager.default.temporaryDirectory.appendingPathComponent(name)
         try? FileManager.default.removeItem(at: dest)
 
+        let userWords = userDictionary
         let (progressStream, progressCont) = AsyncStream.makeStream(of: (Int, Int).self)
         let worker = Task.detached(priority: .userInitiated) { () -> Result<LibraryBundle.ExportResult, Error> in
             defer { progressCont.finish() }
             do {
-                let r = try LibraryBundle.export(store: store, to: dest) { done, total in
+                let r = try LibraryBundle.export(store: store, to: dest,
+                                                 userWords: userWords) { done, total in
                     progressCont.yield((done, total))
                 }
                 return .success(r)
@@ -483,6 +485,10 @@ final class LibraryViewModel: ObservableObject {
         switch outcome {
         case .success(let r):
             var note = "Import finished: \(r.added) added, \(r.updated) updated, \(r.skipped) already present."
+            if r.learnedWords > 0 {
+                note += " \(r.learnedWords) dictionary words learned from the bundle."
+                userDictionary = store.loadUserDictionary()
+            }
             if r.failed > 0 { note += " \(r.failed) failed." }
             infoMessage = note
             await refresh()
