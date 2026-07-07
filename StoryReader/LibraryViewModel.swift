@@ -56,7 +56,11 @@ final class LibraryViewModel: ObservableObject {
                 try store.bootstrap()
             }.value
             usingICloud = store.usingICloud
-            tagRules = store.loadTagRules()
+            let (rules, addedDefaults) = store.loadTagRules()
+            tagRules = rules
+            if addedDefaults > 0 {
+                infoMessage = "\(addedDefaults) new default tag rules added from the \(TagLibrary.pack.name) pack."
+            }
             userDictionary = store.loadUserDictionary()
 
             let support = try FileManager.default.url(for: .applicationSupportDirectory,
@@ -420,12 +424,14 @@ final class LibraryViewModel: ObservableObject {
         try? FileManager.default.removeItem(at: dest)
 
         let userWords = userDictionary
+        let rules = tagRules
         let (progressStream, progressCont) = AsyncStream.makeStream(of: (Int, Int).self)
         let worker = Task.detached(priority: .userInitiated) { () -> Result<LibraryBundle.ExportResult, Error> in
             defer { progressCont.finish() }
             do {
                 let r = try LibraryBundle.export(store: store, to: dest,
-                                                 userWords: userWords) { done, total in
+                                                 userWords: userWords,
+                                                 tagRules: rules) { done, total in
                     progressCont.yield((done, total))
                 }
                 return .success(r)
@@ -498,6 +504,10 @@ final class LibraryViewModel: ObservableObject {
             if r.learnedWords > 0 {
                 note += " \(r.learnedWords) dictionary words learned from the bundle."
                 userDictionary = store.loadUserDictionary()
+            }
+            if r.learnedRules > 0 {
+                note += " \(r.learnedRules) tag rules added from the bundle."
+                tagRules = store.loadTagRules().rules
             }
             if r.failed > 0 { note += " \(r.failed) failed." }
             infoMessage = note

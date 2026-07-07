@@ -19,68 +19,46 @@ enum TagLibrary {
 
     static let filename = "TagLibrary.json"
 
-    /// Starter rule set, matching the vocabulary the corpus was tagged with.
+    // MARK: - Tag pack (per-market default rules, shipped as data)
+
+    /// One rule as it appears in a pack file or a bundle manifest.
+    struct PackRule: Codable, Hashable {
+        var phrase: String
+        var tag: String
+    }
+
+    /// The app's bundled default rule set. Each market SKU (Story Reader /
+    /// Story Navigator) ships its own DefaultTagRules.json; the code is
+    /// identical. Bump packVersion when the defaults change — new rules are
+    /// merged additively on update, respecting user edits and deletions.
+    struct TagPack: Codable {
+        var packVersion: Int = 0
+        var name: String = ""
+        var rules: [PackRule] = []
+    }
+
+    static let pack: TagPack = {
+        guard let url = Bundle.main.url(forResource: "DefaultTagRules",
+                                        withExtension: "json"),
+              let data = try? Data(contentsOf: url),
+              let p = try? JSONDecoder().decode(TagPack.self, from: data) else {
+            return TagPack()
+        }
+        return p
+    }()
+
+    /// Stable identity of a rule for seed/merge bookkeeping.
+    static func ruleKey(_ phrase: String, _ tag: String) -> String {
+        phrase.lowercased() + "\u{2192}" + normalizeTag(tag)
+    }
+
+    /// Starter rule set from the bundled pack.
     /// Used when no saved Tag Library exists yet; the user can edit or clear
     /// these freely afterwards (a cleared library stays cleared).
     /// Matching is whole-word, so word variants are separate rules.
-    static let defaultRules: [TagRule] = [
-        // bondage
-        TagRule(phrase: "bondage", tag: "bond"),
-        TagRule(phrase: "S&M", tag: "bond"),
-        // rape
-        TagRule(phrase: "rape", tag: "rape"),
-        TagRule(phrase: "rapes", tag: "rape"),
-        TagRule(phrase: "raped", tag: "rape"),
-        // gangbang
-        TagRule(phrase: "gangbang", tag: "gangbang"),
-        TagRule(phrase: "gang bang", tag: "gangbang"),
-        // gloryhole
-        TagRule(phrase: "gloryhole", tag: "gloryhole"),
-        TagRule(phrase: "glory hole", tag: "gloryhole"),
-        // humiliation
-        TagRule(phrase: "humiliation", tag: "humil"),
-        TagRule(phrase: "humiliate", tag: "humil"),
-        TagRule(phrase: "humiliated", tag: "humil"),
-        TagRule(phrase: "humiliates", tag: "humil"),
-        // incest
-        TagRule(phrase: "incest", tag: "incest"),
-        // orgy
-        TagRule(phrase: "orgy", tag: "orgy"),
-        // prison
-        TagRule(phrase: "prison", tag: "prison"),
-        TagRule(phrase: "jail", tag: "prison"),
-        TagRule(phrase: "cellmate", tag: "prison"),
-        TagRule(phrase: "cell mate", tag: "prison"),
-        TagRule(phrase: "sentenced", tag: "prison"),
-        TagRule(phrase: "slammer", tag: "prison"),
-        // slave
-        TagRule(phrase: "slave", tag: "slave"),
-        TagRule(phrase: "slaves", tag: "slave"),
-        TagRule(phrase: "enslave", tag: "slave"),
-        TagRule(phrase: "enslaved", tag: "slave"),
-        TagRule(phrase: "slavery", tag: "slave"),
-        TagRule(phrase: "enslavement", tag: "slave"),
-        TagRule(phrase: "enslaver", tag: "slave"),
-        // military — navy counts only when it isn't the color/clothing
-        TagRule(phrase: "army", tag: "military"),
-        TagRule(phrase: "marine", tag: "military"),
-        TagRule(phrase: "marines", tag: "military"),
-        TagRule(phrase: "air force", tag: "military"),
-        TagRule(phrase: "airforce", tag: "military"),
-        TagRule(phrase: "coast guard", tag: "military"),
-        TagRule(phrase: "navy !blue|blazer|suit|tie", tag: "military"),
-        // uniform
-        TagRule(phrase: "uniform", tag: "uniform"),
-        // police
-        TagRule(phrase: "police", tag: "police"),
-        TagRule(phrase: "sheriff", tag: "police"),
-        // war — strong contextual phrases only; the bare word "war"
-        // matches too many figurative uses to be a default
-        TagRule(phrase: "world war", tag: "war"),
-        TagRule(phrase: "wartime", tag: "war"),
-        TagRule(phrase: "battlefield", tag: "war"),
-        TagRule(phrase: "war zone", tag: "war"),
-    ]
+    static var defaultRules: [TagRule] {
+        pack.rules.map { TagRule(phrase: $0.phrase, tag: $0.tag) }
+    }
 
     /// Canonical tag form: lowercase, no '#', no spaces.
     static func normalizeTag(_ raw: String) -> String {

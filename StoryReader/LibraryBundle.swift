@@ -47,6 +47,9 @@ enum LibraryBundle {
         /// words (names, slang) travel with the library. Old readers ignore
         /// this key; old bundles simply don't have it.
         var userDictionary: [String]? = nil
+        /// Optional: the exporter's tag rules, so a shared library arrives
+        /// speaking its own vocabulary (a show's tags, a curator's tags).
+        var tagRules: [TagLibrary.PackRule]? = nil
     }
 
     enum BundleError: LocalizedError {
@@ -82,6 +85,8 @@ enum LibraryBundle {
         var failed = 0
         /// Words merged into the local personal dictionary from the bundle.
         var learnedWords = 0
+        /// Tag rules merged into the local Tag Library from the bundle.
+        var learnedRules = 0
     }
 
     // MARK: - Export
@@ -91,6 +96,7 @@ enum LibraryBundle {
     /// (and counted), never silently lost.
     static func export(store: LibraryStore, to dest: URL,
                        userWords: Set<String> = [],
+                       tagRules: [TagRule] = [],
                        progress: @escaping (Int, Int) -> Void) throws -> ExportResult {
         guard store.storiesURL != nil else { throw BundleError.libraryNotReady }
         let fm = FileManager.default
@@ -130,6 +136,11 @@ enum LibraryBundle {
         manifest.entries = entries
         if !userWords.isEmpty {
             manifest.userDictionary = userWords.sorted()
+        }
+        if !tagRules.isEmpty {
+            manifest.tagRules = tagRules.map {
+                TagLibrary.PackRule(phrase: $0.phrase, tag: $0.tag)
+            }
         }
 
         let enc = JSONEncoder()
@@ -272,6 +283,10 @@ enum LibraryBundle {
                 store.saveUserDictionary(merged)
                 result.learnedWords = merged.count - mine.count
             }
+        }
+        // Merge the bundle's tag rules (if any) — additive only.
+        if let bundleRules = manifest.tagRules, !bundleRules.isEmpty {
+            result.learnedRules = store.mergeTagRules(bundleRules)
         }
         return result
     }

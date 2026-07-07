@@ -56,8 +56,33 @@ final class LibraryStore: @unchecked Sendable {
 
     // MARK: - Tag library (synced phrase → tag rules)
 
-    func loadTagRules() -> [TagRule] {
-        guard let root = rootURL else { return [] }
+    /// Seed bookkeeping: which pack version has been applied, and which rule
+    /// keys were ever seeded (so deleted defaults never resurrect).
+    private struct TagPackState: Codable {
+        var seededVersion = 0
+        var seededKeys: [String] = []
+    }
+
+    private var packStateURL: URL? {
+        rootURL?.appendingPathComponent("TagPackState.json")
+    }
+
+    private func loadPackState() -> TagPackState? {
+        guard let url = packStateURL, let data = try? Data(contentsOf: url) else { return nil }
+        return try? JSONDecoder().decode(TagPackState.self, from: data)
+    }
+
+    private func savePackState(_ s: TagPackState) {
+        guard let url = packStateURL else { return }
+        if let data = try? JSONEncoder().encode(s) {
+            try? data.write(to: url, options: .atomic)
+        }
+    }
+
+    /// Loads the tag rules, seeding/merging the bundled pack as needed.
+    /// Returns the rules plus how many new defaults a pack update added.
+    func loadTagRules() -> (rules: [TagRule], addedDefaults: Int) {
+        guard let root = rootURL else { return ([], 0) }
         let url = root.appendingPathComponent(TagLibrary.filename)
         // On a fresh device the file may still be an iCloud placeholder —
         // request it and return nothing rather than seeding defaults over
@@ -65,18 +90,67 @@ final class LibraryStore: @unchecked Sendable {
         let placeholder = root.appendingPathComponent("." + TagLibrary.filename + ".icloud")
         if fm.fileExists(atPath: placeholder.path) {
             try? fm.startDownloadingUbiquitousItem(at: placeholder)
-            return []
+            return ([], 0)
         }
-        // No saved library anywhere: first launch → seed the default rules.
+        let pack = TagLibrary.pack
+        let packKeys = pack.rules.map { TagLibrary.ruleKey($0.phrase, $0.tag) }
+
+        // First launch: seed the whole pack.
         // (An intentionally cleared library is saved as "[]", not deleted,
         // so defaults don't resurrect.)
         guard fm.fileExists(atPath: url.path) else {
-            saveTagRules(TagLibrary.defaultRules)
-            return TagLibrary.defaultRules
+            let seeded = TagLibrary.defaultRules
+            saveTagRules(seeded)
+            savePackState(TagPackState(seededVersion: pack.packVersion,
+                                       seededKeys: packKeys))
+            return (seeded, 0)
         }
         guard let data = try? Data(contentsOf: url),
-              let rules = try? JSONDecoder().decode([TagRule].self, from: data) else { return [] }
-        return rules
+              var rules = try? JSONDecoder().decode([TagRule].self, from: data) else {
+            return ([], 0)
+        }
+
+        var state = loadPackState()
+        if state == nil {
+            // Pre-pack install: its rules came from the current pack — record
+            // that without merging, so nothing the user deleted comes back.
+            state = TagPackState(seededVersion: pack.packVersion, seededKeys: packKeys)
+            savePackState(state!)
+            return (rules, 0)
+        }
+
+        // Pack update: additively merge rules never seeded before.
+        var added = 0
+        if pack.packVersion > state!.seededVersion {
+            let seen = Set(state!.seededKeys)
+            let existing = Set(rules.map { TagLibrary.ruleKey($0.phrase, $0.tag) })
+            for r in pack.rules {
+                let key = TagLibrary.ruleKey(r.phrase, r.tag)
+                if !seen.contains(key) && !existing.contains(key) {
+                    rules.append(TagRule(phrase: r.phrase, tag: r.tag))
+                    added += 1
+                }
+            }
+            state!.seededVersion = pack.packVersion
+            state!.seededKeys = Array(Set(state!.seededKeys).union(packKeys))
+            savePackState(state!)
+            if added > 0 { saveTagRules(rules) }
+        }
+        return (rules, added)
+    }
+
+    /// Additively merge rules (e.g. from an imported bundle); returns how
+    /// many were new. Never removes or alters existing rules.
+    func mergeTagRules(_ incoming: [TagLibrary.PackRule]) -> Int {
+        var rules = loadTagRules().rules
+        let existing = Set(rules.map { TagLibrary.ruleKey($0.phrase, $0.tag) })
+        var added = 0
+        for r in incoming where !existing.contains(TagLibrary.ruleKey(r.phrase, r.tag)) {
+            rules.append(TagRule(phrase: r.phrase, tag: r.tag))
+            added += 1
+        }
+        if added > 0 { saveTagRules(rules) }
+        return added
     }
 
     func saveTagRules(_ rules: [TagRule]) {
