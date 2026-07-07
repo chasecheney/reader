@@ -5,6 +5,10 @@
 #
 # Prereqs (one time):
 #   brew install create-dmg
+#   A notarytool keychain profile. Credentials are ACCOUNT-level, not
+#   per-app — if you already stored one for another app (e.g. MP4ToolsPlus),
+#   reuse it:   NOTARY_PROFILE=yourprofile ./make_dmg.sh ...
+#   Otherwise create one:
 #   xcrun notarytool store-credentials storyreader \
 #       --apple-id YOUR_APPLE_ID --team-id YOUR_TEAM_ID
 #   (password = an app-specific password from account.apple.com)
@@ -19,7 +23,7 @@ VER="${2:?usage: make_dmg.sh /path/to/Story\ Reader.app VERSION}"
 NAME="StoryReader-${VER}"
 DMG="${NAME}.dmg"
 IDENTITY="Developer ID Application"   # narrows to your single Developer ID cert
-PROFILE="storyreader"                 # notarytool keychain profile name
+PROFILE="${NOTARY_PROFILE:-storyreader}"   # notarytool keychain profile (override via env)
 
 echo "==> Verifying the app is notarized..."
 xcrun stapler validate "$APP" || {
