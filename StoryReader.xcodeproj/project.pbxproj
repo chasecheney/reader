@@ -13,7 +13,7 @@
 /* Begin PBXFileReference section */
 		5A0000000000000000000004 /* StoryReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoryReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D90331852FFD661000D8394F /* StoryNavigator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoryNavigator.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D90331862FFD661000D8394F /* StoryReader copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "StoryReader copy-Info.plist"; path = "/Users/cheneydotcom/claude/ASSGM Stories/Reader/reader/StoryReader copy-Info.plist"; sourceTree = "<absolute>"; };
+		D90331862FFD661000D8394F /* StoryNavigatorInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = StoryNavigatorInfo.plist; sourceTree = "<group>"; };
 		D90331882FFD68C200D8394F /* DefaultTagRules.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = DefaultTagRules.json; sourceTree = "<group>"; };
 		D903318A2FFD68C200D8394F /* DefaultTagRules.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = DefaultTagRules.json; sourceTree = "<group>"; };
 		D903318B2FFD68C200D8394F /* dictionary-words.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "dictionary-words.txt"; sourceTree = "<group>"; };
@@ -64,7 +64,7 @@
 			children = (
 				D903318E2FFD68C200D8394F /* Packs */,
 				5A0000000000000000000005 /* StoryReader */,
-				D90331862FFD661000D8394F /* StoryReader copy-Info.plist */,
+				D90331862FFD661000D8394F /* StoryNavigatorInfo.plist */,
 				5A0000000000000000000003 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -435,7 +435,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "StoryReader copy-Info.plist";
+				INFOPLIST_FILE = StoryNavigatorInfo.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Story Navigator";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
@@ -476,7 +476,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "StoryReader copy-Info.plist";
+				INFOPLIST_FILE = StoryNavigatorInfo.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Story Navigator";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
