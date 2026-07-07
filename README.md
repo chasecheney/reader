@@ -34,6 +34,12 @@ The app ships with a default rule set (~40 rules covering #bond, #rape, #gangban
 
 When you import files, an options step appears: filename tags are always picked up, and a checkbox offers "search story text and add tags from the Tag Library." With it checked, each imported story's text is scanned (case-insensitive, whole-word matching) and matched tags are saved as custom tags — they sync, they show in the sidebar tag list and filters, and files are never renamed. Tags already present in the filename aren't duplicated. The checkbox state is remembered between imports.
 
+## Editing and spell check
+
+Reading Options menu → **Edit Story…** switches the reader to a plain-text editor. Save (⌘S) compresses the edited text back into the library, re-indexes it, and syncs to the other device; Cancel discards. While editing, **Check Spelling** lists every word not found in the dictionary — with occurrence counts, one-tap "replace all" suggestions (case-preserving), and "Add to Dictionary" for names and slang. The personal dictionary syncs between devices (`UserDictionary.txt` in the iCloud container).
+
+The bundled dictionary (`StoryReader/dictionary.txt`, ~30k words) is **derived from the story corpus itself** — document-frequency filtered with a typo guard — so it ships with the app and inside shared builds with **no third-party license restrictions**, and it already knows the corpus's contractions, slang, and recurring names. The list is ordered most-common-first; suggestion ranking uses that order (that's why "teh" suggests "the"). Rebuild it any time with `scripts/make_dictionary.py CORPUS_DIR StoryReader/dictionary.txt`.
+
 ## Library bundles (share, back up, restore)
 
 The toolbar's shipping-box menu packages the entire library into a single compressed `.storybundle` file, and merges such files back in.

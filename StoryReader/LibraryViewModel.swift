@@ -32,6 +32,9 @@ final class LibraryViewModel: ObservableObject {
     /// Synced phrase → tag auto-tagging rules (see TagLibrary).
     @Published private(set) var tagRules: [TagRule] = []
 
+    /// Synced personal spelling dictionary (see SpellCheck).
+    @Published private(set) var userDictionary: Set<String> = []
+
     private var searchResults: Set<String>? = nil   // nil = no active search
     private var searchTask: Task<Void, Never>?
     private var userStates: [String: UserState] = [:]
@@ -50,6 +53,7 @@ final class LibraryViewModel: ObservableObject {
             }.value
             usingICloud = store.usingICloud
             tagRules = store.loadTagRules()
+            userDictionary = store.loadUserDictionary()
 
             let support = try FileManager.default.url(for: .applicationSupportDirectory,
                                                       in: .userDomainMask,
@@ -308,6 +312,35 @@ final class LibraryViewModel: ObservableObject {
         tagRules = clean
         let store = self.store
         Task.detached(priority: .utility) { store.saveTagRules(clean) }
+    }
+
+    // MARK: - Editing & spelling
+
+    /// Saves edited story text back to the library and re-indexes.
+    /// Returns false (with errorMessage set) on failure.
+    func saveStoryText(_ story: Story, text: String) async -> Bool {
+        let store = self.store
+        let stem = story.stem
+        do {
+            try await Task.detached(priority: .userInitiated) {
+                try store.saveBody(stem: stem, text: text)
+            }.value
+        } catch {
+            errorMessage = error.localizedDescription
+            return false
+        }
+        await refresh()   // picks up the size/mtime change, re-indexes this file
+        return true
+    }
+
+    func addToUserDictionary(_ word: String) {
+        let w = SpellCheck.normalize(word)
+            .trimmingCharacters(in: .whitespaces)
+        guard !w.isEmpty else { return }
+        userDictionary.insert(w)
+        let snapshot = userDictionary
+        let store = self.store
+        Task.detached(priority: .utility) { store.saveUserDictionary(snapshot) }
     }
 
     // MARK: - Import

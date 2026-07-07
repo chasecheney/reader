@@ -66,6 +66,13 @@ struct ReaderView: View {
     @State private var scrolledID: Int?
     @State private var restored = false
 
+    // Editing
+    @State private var rawBody = ""
+    @State private var editing = false
+    @State private var draft = ""
+    @State private var saving = false
+    @State private var showSpelling = false
+
     // Auto-scroll
     @AppStorage("readerScrollSpeed") private var scrollSpeed = 1.0   // 0.25×–4×
     @State private var showAutoScroll = false
@@ -86,11 +93,17 @@ struct ReaderView: View {
                 ContentUnavailableView("Couldn’t Open Story",
                                        systemImage: "exclamationmark.icloud",
                                        description: Text(loadError))
+            } else if editing {
+                editorView
             } else {
                 readerScroll
             }
         }
         .background(theme.background ?? Color.clear)
+        .sheet(isPresented: $showSpelling) {
+            SpellingView(text: $draft)
+                .environmentObject(vm)
+        }
         .navigationTitle(current.title)
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
@@ -156,8 +169,77 @@ struct ReaderView: View {
         }
     }
 
+    // MARK: - Editing
+
+    private var editorView: some View {
+        GeometryReader { geo in
+            let columnWidth = min(760, geo.size.width)
+            TextEditor(text: $draft)
+                .font(.system(size: fontSize, design: serif ? .serif : .default))
+                .lineSpacing(fontSize * 0.25)
+                .scrollContentBackground(.hidden)
+                .padding(.horizontal, 24)
+                .padding(.vertical, 16)
+                .frame(width: columnWidth)
+                .frame(maxWidth: .infinity)
+                .disabled(saving)
+        }
+    }
+
+    private func beginEditing() {
+        stopAutoScroll()
+        showAutoScroll = false
+        draft = rawBody
+        editing = true
+    }
+
+    private func saveEdits() {
+        saving = true
+        Task {
+            if await vm.saveStoryText(current, text: draft) {
+                rawBody = draft
+                paragraphs = Self.splitParagraphs(draft)
+                editing = false
+            }
+            saving = false
+        }
+    }
+
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
+        if editing {
+            ToolbarItemGroup(placement: .primaryAction) {
+                Button {
+                    showSpelling = true
+                } label: {
+                    Label("Check Spelling", systemImage: "textformat.abc.dottedunderline")
+                }
+                .help("List unknown words with suggested corrections")
+                .disabled(saving)
+
+                Button("Cancel", role: .cancel) {
+                    editing = false
+                    draft = ""
+                }
+                .disabled(saving)
+
+                Button {
+                    saveEdits()
+                } label: {
+                    if saving { ProgressView().controlSize(.small) }
+                    else { Text("Save").bold() }
+                }
+                .disabled(saving || draft == rawBody)
+                .keyboardShortcut("s", modifiers: [.command])
+                .help("Save changes back to the library (syncs to your other device)")
+            }
+        } else {
+            regularToolbar
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var regularToolbar: some ToolbarContent {
         ToolbarItemGroup(placement: .primaryAction) {
             // << previous story/series
             Button {
@@ -240,6 +322,10 @@ struct ReaderView: View {
                     Button(current.isRead ? "Mark as Unread" : "Mark as Read") {
                         vm.setRead(current, !current.isRead)
                     }
+                }
+                Section {
+                    Button("Edit Story…") { beginEditing() }
+                        .disabled(loading || loadError != nil)
                 }
             } label: {
                 Label("Reading Options", systemImage: "textformat.size")
@@ -347,12 +433,15 @@ struct ReaderView: View {
         loading = true
         loadError = nil
         restored = false
+        editing = false
+        draft = ""
         let store = vm.store
         let stem = story.stem
         do {
             let body = try await Task.detached(priority: .userInitiated) {
                 try store.loadBody(stem: stem)
             }.value
+            rawBody = body
             paragraphs = Self.splitParagraphs(body)
             loading = false
 

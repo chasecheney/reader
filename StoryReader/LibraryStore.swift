@@ -177,6 +177,42 @@ final class LibraryStore: @unchecked Sendable {
         throw LibraryError.unreadable(url.lastPathComponent)
     }
 
+    // MARK: - Editing (save story text back)
+
+    /// Compresses and writes edited story text over the library copy.
+    /// The mtime/size change makes the next refresh() re-index the file,
+    /// and iCloud propagates it to the other device.
+    func saveBody(stem: String, text: String) throws {
+        guard let dir = storiesURL else { throw LibraryError.notReady }
+        let packed = try (Data(text.utf8) as NSData).compressed(using: .lzfse) as Data
+        try packed.write(to: dir.appendingPathComponent(stem + ".lzfse"),
+                         options: .atomic)
+    }
+
+    // MARK: - User dictionary (synced, one word per line)
+
+    private var userDictURL: URL? {
+        rootURL?.appendingPathComponent("UserDictionary.txt")
+    }
+
+    func loadUserDictionary() -> Set<String> {
+        guard let url = userDictURL else { return [] }
+        if let root = rootURL {
+            let ph = root.appendingPathComponent(".UserDictionary.txt.icloud")
+            if fm.fileExists(atPath: ph.path) {
+                try? fm.startDownloadingUbiquitousItem(at: ph)
+            }
+        }
+        guard let text = try? String(contentsOf: url, encoding: .utf8) else { return [] }
+        return Set(text.split(separator: "\n").map(String.init).filter { !$0.isEmpty })
+    }
+
+    func saveUserDictionary(_ words: Set<String>) {
+        guard let url = userDictURL else { return }
+        let text = words.sorted().joined(separator: "\n") + "\n"
+        try? Data(text.utf8).write(to: url, options: .atomic)
+    }
+
     // MARK: - Importing
 
     struct ImportResult { var imported = 0; var skipped = 0; var failed = 0; var tagged = 0 }
