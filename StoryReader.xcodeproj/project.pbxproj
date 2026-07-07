@@ -6,13 +6,36 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D90331912FFD68C200D8394F /* DefaultTagRules.json in Resources */ = {isa = PBXBuildFile; fileRef = D903318A2FFD68C200D8394F /* DefaultTagRules.json */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		5A0000000000000000000004 /* StoryReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoryReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D90331852FFD661000D8394F /* StoryNavigator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoryNavigator.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D90331862FFD661000D8394F /* StoryReader copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "StoryReader copy-Info.plist"; path = "/Users/cheneydotcom/claude/ASSGM Stories/Reader/reader/StoryReader copy-Info.plist"; sourceTree = "<absolute>"; };
+		D90331882FFD68C200D8394F /* DefaultTagRules.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = DefaultTagRules.json; sourceTree = "<group>"; };
+		D903318A2FFD68C200D8394F /* DefaultTagRules.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = DefaultTagRules.json; sourceTree = "<group>"; };
+		D903318B2FFD68C200D8394F /* dictionary-words.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "dictionary-words.txt"; sourceTree = "<group>"; };
+		D903318D2FFD68C200D8394F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		D90331872FFD661100D8394F /* Exceptions for "StoryReader" folder in "StoryNavigator" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				DefaultTagRules.json,
+			);
+			target = D903317E2FFD661000D8394F /* StoryNavigator */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		5A0000000000000000000005 /* StoryReader */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D90331872FFD661100D8394F /* Exceptions for "StoryReader" folder in "StoryNavigator" target */,
+			);
 			path = StoryReader;
 			sourceTree = "<group>";
 		};
@@ -26,13 +49,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D90331802FFD661000D8394F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		5A0000000000000000000002 = {
 			isa = PBXGroup;
 			children = (
+				D903318E2FFD68C200D8394F /* Packs */,
 				5A0000000000000000000005 /* StoryReader */,
+				D90331862FFD661000D8394F /* StoryReader copy-Info.plist */,
 				5A0000000000000000000003 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,8 +73,36 @@
 			isa = PBXGroup;
 			children = (
 				5A0000000000000000000004 /* StoryReader.app */,
+				D90331852FFD661000D8394F /* StoryNavigator.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		D90331892FFD68C200D8394F /* EroticFiction */ = {
+			isa = PBXGroup;
+			children = (
+				D90331882FFD68C200D8394F /* DefaultTagRules.json */,
+			);
+			path = EroticFiction;
+			sourceTree = "<group>";
+		};
+		D903318C2FFD68C200D8394F /* Production */ = {
+			isa = PBXGroup;
+			children = (
+				D903318A2FFD68C200D8394F /* DefaultTagRules.json */,
+				D903318B2FFD68C200D8394F /* dictionary-words.txt */,
+			);
+			path = Production;
+			sourceTree = "<group>";
+		};
+		D903318E2FFD68C200D8394F /* Packs */ = {
+			isa = PBXGroup;
+			children = (
+				D90331892FFD68C200D8394F /* EroticFiction */,
+				D903318C2FFD68C200D8394F /* Production */,
+				D903318D2FFD68C200D8394F /* README.md */,
+			);
+			path = Packs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -68,6 +128,28 @@
 			);
 			productName = StoryReader;
 			productReference = 5A0000000000000000000004 /* StoryReader.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D903317E2FFD661000D8394F /* StoryNavigator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D90331822FFD661000D8394F /* Build configuration list for PBXNativeTarget "StoryNavigator" */;
+			buildPhases = (
+				D903317F2FFD661000D8394F /* Sources */,
+				D90331802FFD661000D8394F /* Frameworks */,
+				D90331812FFD661000D8394F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				5A0000000000000000000005 /* StoryReader */,
+			);
+			name = StoryNavigator;
+			packageProductDependencies = (
+			);
+			productName = StoryReader;
+			productReference = D90331852FFD661000D8394F /* StoryNavigator.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -100,6 +182,7 @@
 			projectRoot = "";
 			targets = (
 				5A0000000000000000000006 /* StoryReader */,
+				D903317E2FFD661000D8394F /* StoryNavigator */,
 			);
 		};
 /* End PBXProject section */
@@ -112,10 +195,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D90331812FFD661000D8394F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D90331912FFD68C200D8394F /* DefaultTagRules.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5A0000000000000000000007 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D903317F2FFD661000D8394F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -323,6 +421,88 @@
 			};
 			name = Release;
 		};
+		D90331832FFD661000D8394F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = StoryReader/StoryReader.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = JTU6ZV6ZZF;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "StoryReader copy-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Story Navigator";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad[sdk=iphoneos*]" = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				"INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad[sdk=iphonesimulator*]" = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cheney.StoryNavigator;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		D90331842FFD661000D8394F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = StoryReader/StoryReader.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = JTU6ZV6ZZF;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "StoryReader copy-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Story Navigator";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad[sdk=iphoneos*]" = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				"INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad[sdk=iphonesimulator*]" = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cheney.StoryNavigator;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -340,6 +520,15 @@
 			buildConfigurations = (
 				5A000000000000000000000E /* Debug */,
 				5A000000000000000000000F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D90331822FFD661000D8394F /* Build configuration list for PBXNativeTarget "StoryNavigator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D90331832FFD661000D8394F /* Debug */,
+				D90331842FFD661000D8394F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
