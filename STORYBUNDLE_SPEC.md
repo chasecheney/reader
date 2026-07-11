@@ -36,7 +36,7 @@ interpreted as described in RFC 2119.
 | Extension           | `.storybundle`                                   |
 | Magic (first 8 B)   | ASCII `STRYBNDL`                                 |
 | UTI (Apple)         | `com.cheney.storyreader.storybundle`, conforms to `public.data` |
-| Suggested MIME      | `application/x-storybundle`                      |
+| Media type          | `application/vnd.cheney.storybundle` (vendor tree per RFC 6838 §3.2; see §11 for the registration template. The legacy `x-` prefix is deliberately not used — RFC 6838 §3.4 deprecates it and such types can never be registered.) |
 
 Third-party apps on Apple platforms MAY import (declare the UTI) but SHOULD
 NOT export a *different* type under the same identifier.
@@ -222,7 +222,52 @@ A conforming reader MUST: accept the file, report one story with stem
 dictionary word and the tag rule; and reject the file if any of magic,
 version, or bounds were altered.
 
-## 11. Reference implementation pointers
+## 11. Media type registration template (RFC 6838 §5.6)
+
+Ready to submit at iana.org/form/media-types when registration is desired.
+
+```
+Type name:                 application
+Subtype name:              vnd.cheney.storybundle
+Required parameters:       none
+Optional parameters:       none
+Encoding considerations:   binary
+Security considerations:   See STORYBUNDLE_SPEC.md section 8. The format
+                           carries compressed plain text plus JSON metadata;
+                           no executable content. Known risks for consumers:
+                           path traversal via entry stems, out-of-bounds
+                           offsets, and decompression expansion; conforming
+                           readers validate all three. The manifest may
+                           contain personal vocabulary (spelling words, tag
+                           phrases) — a privacy consideration when sharing.
+Interoperability considerations:
+                           Blobs are LZFSE-compressed (open-source codec:
+                           github.com/lzfse/lzfse). Unknown manifest keys
+                           must be ignored; the binary header version gates
+                           incompatible changes.
+Published specification:   STORYBUNDLE_SPEC.md, distributed with the
+                           reference implementation
+                           (github.com/chasecheney/reader)
+Applications that use this media type:
+                           Story Reader, Story Navigator (macOS/iPadOS)
+Fragment identifier considerations:
+                           none
+Additional information:
+  Deprecated alias names:  none
+  Magic number(s):         first 8 bytes ASCII "STRYBNDL"
+                           (53 54 52 59 42 4E 44 4C)
+  File extension(s):       .storybundle
+  Macintosh file type code(s): none; Apple UTI
+                           com.cheney.storyreader.storybundle
+Person & email address to contact for further information:
+                           <fill in before submission>
+Intended usage:            COMMON
+Restrictions on usage:     none
+Author:                    ChaseCheney LLC
+Change controller:         ChaseCheney LLC
+```
+
+## 12. Reference implementation pointers
 
 - Writer/reader: `StoryReader/LibraryBundle.swift`
 - Filename convention & series grouping: `StoryReader/FilenameParser.swift`
