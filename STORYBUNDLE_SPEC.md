@@ -36,7 +36,7 @@ interpreted as described in RFC 2119.
 | Extension           | `.storybundle`                                   |
 | Magic (first 8 B)   | ASCII `STRYBNDL`                                 |
 | UTI (Apple)         | `com.cheney.storyreader.storybundle`, conforms to `public.data` |
-| Media type          | `application/vnd.cheney.storybundle` (vendor tree per RFC 6838 §3.2; see §11 for the registration template. The legacy `x-` prefix is deliberately not used — RFC 6838 §3.4 deprecates it and such types can never be registered.) |
+| Media type          | `application/vnd.chasecheney.storybundle` (vendor tree per RFC 6838 §3.2; see §11 for the registration template. The legacy `x-` prefix is deliberately not used — RFC 6838 §3.4 deprecates it and such types can never be registered.) |
 
 Third-party apps on Apple platforms MAY import (declare the UTI) but SHOULD
 NOT export a *different* type under the same identifier.
@@ -228,7 +228,7 @@ Ready to submit at iana.org/form/media-types when registration is desired.
 
 ```
 Type name:                 application
-Subtype name:              vnd.cheney.storybundle
+Subtype name:              vnd.chasecheney.storybundle
 Required parameters:       none
 Optional parameters:       none
 Encoding considerations:   binary
