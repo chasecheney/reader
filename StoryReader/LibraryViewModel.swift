@@ -43,6 +43,14 @@ final class LibraryViewModel: ObservableObject {
     private var searchTask: Task<Void, Never>?
     private var userStates: [String: UserState] = [:]
 
+    /// O(1) series-key -> position in `groups`. SwiftUI evaluates the reader
+    /// toolbar's neighbor/adjacent queries on every render; linear scans here
+    /// melted the main thread at 300k-story scale.
+    private var groupIndex: [String: Int] = [:]
+    /// Cache for the "selected story's group isn't in the (filtered) list"
+    /// fallback, which otherwise filters+sorts the ENTIRE library per render.
+    private var fallbackGroupCache: SeriesGroup?
+
     var selectedStory: Story? {
         selectedStoryStem.flatMap { stories[$0] }
     }
@@ -195,6 +203,9 @@ final class LibraryViewModel: ObservableObject {
         }
         out.sort { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
         groups = out
+        groupIndex = Dictionary(uniqueKeysWithValues:
+            out.enumerated().map { ($0.element.id, $0.offset) })
+        fallbackGroupCache = nil
     }
 
     /// Manual sortOrder wins; parts without one follow, natural-sorted.
@@ -521,11 +532,17 @@ final class LibraryViewModel: ObservableObject {
 
     func group(containing story: Story) -> SeriesGroup? {
         let key = story.effectiveSeriesKey
-        return groups.first { $0.id == key }
-        ?? SeriesGroup(id: key,
-                       title: FilenameParser.baseTitle(story.title),
-                       stories: Self.sortParts(stories.values
-                           .filter { $0.effectiveSeriesKey == key }))
+        if let i = groupIndex[key] { return groups[i] }
+        // Story's group isn't in the current (filtered/searched) list.
+        // Building it means scanning every story — do that once, not on
+        // every render.
+        if let cached = fallbackGroupCache, cached.id == key { return cached }
+        let g = SeriesGroup(id: key,
+                            title: FilenameParser.baseTitle(story.title),
+                            stories: Self.sortParts(stories.values
+                                .filter { $0.effectiveSeriesKey == key }))
+        fallbackGroupCache = g
+        return g
     }
 
     // MARK: - Manual series ordering
@@ -612,9 +629,7 @@ final class LibraryViewModel: ObservableObject {
 
     /// First part of the previous/next story (series) in the current list.
     func adjacentSeries(from story: Story, offset: Int) -> Story? {
-        guard let gi = groups.firstIndex(where: { $0.id == story.effectiveSeriesKey }) else {
-            return nil
-        }
+        guard let gi = groupIndex[story.effectiveSeriesKey] else { return nil }
         let j = gi + offset
         guard groups.indices.contains(j) else { return nil }
         return groups[j].stories.first
