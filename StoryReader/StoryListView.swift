@@ -52,6 +52,16 @@ struct StoryListView: View {
                     }
                 }
             }
+            // At 344k stories the full list can't be a single SwiftUI List —
+            // rows beyond the cap are reachable via search/filter instead.
+            if vm.totalGroupCount > LibraryViewModel.displayCap {
+                Section {
+                    Label("Showing the first \(LibraryViewModel.displayCap.formatted()) of \(vm.totalGroupCount.formatted()) stories — search or pick a tag to narrow down.",
+                          systemImage: "line.3.horizontal.decrease.circle")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                }
+            }
         }
         .searchable(text: $vm.searchText,
                     prompt: "Search — use \"exact phrase\", AND, OR")

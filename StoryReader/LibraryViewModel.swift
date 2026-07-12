@@ -9,9 +9,15 @@ final class LibraryViewModel: ObservableObject {
 
     /// All stories keyed by stem.
     @Published private(set) var stories: [String: Story] = [:]
-    /// Groups after filter + search, ready for display.
+    /// Groups after filter + search, ready for display — capped at
+    /// `displayCap` rows (SwiftUI List diffing is O(rows) on every published
+    /// change; 200k rows froze the UI at 344k-story scale).
     @Published private(set) var groups: [SeriesGroup] = []
+    /// Total groups matching the filter, including those beyond the cap.
+    @Published private(set) var totalGroupCount = 0
     @Published private(set) var tagCounts: [(tag: String, count: Int)] = []
+
+    nonisolated static let displayCap = 2500
 
     // Both didSets fire while SwiftUI is writing a binding (mid view-update),
     // so the dependent `groups` mutation must be deferred a runloop tick —
@@ -189,27 +195,74 @@ final class LibraryViewModel: ObservableObject {
 
     // MARK: - Grouping / filtering
 
+    private var rebuildGeneration = 0
+
+    /// Heavy work (grouping + sorting 344k stories) runs off the main
+    /// thread from a snapshot; results are applied once, and stale results
+    /// from superseded rebuilds are dropped.
     private func rebuildGroups() {
-        var byKey: [String: [Story]] = [:]
-        for s in stories.values where passesFilter(s) {
-            byKey[s.effectiveSeriesKey, default: []].append(s)
+        rebuildGeneration += 1
+        let gen = rebuildGeneration
+        let snapshot = stories
+        let filter = self.filter
+        let results = searchResults
+        Task.detached(priority: .userInitiated) { [weak self] in
+            var byKey: [String: [Story]] = [:]
+            for s in snapshot.values where Self.passes(s, filter: filter, results: results) {
+                byKey[s.effectiveSeriesKey, default: []].append(s)
+            }
+            var out: [(key: String, group: SeriesGroup)] = []
+            out.reserveCapacity(byKey.count)
+            for (key, list) in byKey {
+                let sorted = Self.sortParts(list)
+                let display = FilenameParser.baseTitle(sorted[0].title)
+                out.append((Self.naturalKey(display),
+                            SeriesGroup(id: key, title: display, stories: sorted)))
+            }
+            // Precomputed natural-sort keys: plain String < is ~30x faster
+            // than localizedStandardCompare at this scale.
+            out.sort { $0.key < $1.key }
+            let total = out.count
+            let display = total > Self.displayCap
+                ? Array(out.prefix(Self.displayCap).map(\.group))
+                : out.map(\.group)
+            let index = Dictionary(uniqueKeysWithValues:
+                display.enumerated().map { ($0.element.id, $0.offset) })
+            await MainActor.run { [weak self] in
+                guard let self, self.rebuildGeneration == gen else { return }
+                self.groups = display
+                self.totalGroupCount = total
+                self.groupIndex = index
+                self.fallbackGroupCache = nil
+            }
         }
-        var out: [SeriesGroup] = []
-        out.reserveCapacity(byKey.count)
-        for (key, list) in byKey {
-            let sorted = Self.sortParts(list)
-            let display = FilenameParser.baseTitle(sorted[0].title)
-            out.append(SeriesGroup(id: key, title: display, stories: sorted))
+    }
+
+    /// Lowercased title with digit runs zero-padded to 8, so lexicographic
+    /// order matches natural order ("Part 2" < "Part 10") without ICU cost.
+    nonisolated static func naturalKey(_ title: String) -> String {
+        var out = ""
+        out.reserveCapacity(title.count + 8)
+        var digits = ""
+        for ch in title.lowercased() {
+            if ch.isNumber {
+                digits.append(ch)
+            } else {
+                if !digits.isEmpty {
+                    out += String(repeating: "0", count: max(0, 8 - digits.count)) + digits
+                    digits = ""
+                }
+                out.append(ch)
+            }
         }
-        out.sort { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
-        groups = out
-        groupIndex = Dictionary(uniqueKeysWithValues:
-            out.enumerated().map { ($0.element.id, $0.offset) })
-        fallbackGroupCache = nil
+        if !digits.isEmpty {
+            out += String(repeating: "0", count: max(0, 8 - digits.count)) + digits
+        }
+        return out
     }
 
     /// Manual sortOrder wins; parts without one follow, natural-sorted.
-    static func sortParts(_ list: [Story]) -> [Story] {
+    nonisolated static func sortParts(_ list: [Story]) -> [Story] {
         list.sorted { a, b in
             switch (a.sortOrder, b.sortOrder) {
             case let (x?, y?) where x != y: return x < y
@@ -221,8 +274,9 @@ final class LibraryViewModel: ObservableObject {
         }
     }
 
-    private func passesFilter(_ s: Story) -> Bool {
-        if let results = searchResults, !results.contains(s.stem) { return false }
+    nonisolated private static func passes(_ s: Story, filter: LibraryFilter,
+                                           results: Set<String>?) -> Bool {
+        if let results, !results.contains(s.stem) { return false }
         switch filter {
         case .all: return true
         case .favorites: return s.favorite
@@ -231,13 +285,24 @@ final class LibraryViewModel: ObservableObject {
         }
     }
 
+    private var tagCountGeneration = 0
+
     private func rebuildTagCounts() {
-        var counts: [String: Int] = [:]
-        for s in stories.values {
-            for t in s.allTags { counts[t, default: 0] += 1 }
+        tagCountGeneration += 1
+        let gen = tagCountGeneration
+        let snapshot = stories
+        Task.detached(priority: .utility) { [weak self] in
+            var counts: [String: Int] = [:]
+            for s in snapshot.values {
+                for t in s.allTags { counts[t, default: 0] += 1 }
+            }
+            let out = counts.map { (tag: $0.key, count: $0.value) }
+                .sorted { $0.tag < $1.tag }
+            await MainActor.run { [weak self] in
+                guard let self, self.tagCountGeneration == gen else { return }
+                self.tagCounts = out
+            }
         }
-        tagCounts = counts.map { (tag: $0.key, count: $0.value) }
-            .sorted { $0.tag < $1.tag }
     }
 
     // MARK: - Search
@@ -280,12 +345,25 @@ final class LibraryViewModel: ObservableObject {
 
     func savePosition(_ story: Story, fraction: Double) {
         // Avoid rewriting the synced metadata file on every scroll tick.
-        let old = stories[story.stem]?.position ?? 0
+        let old = userStates[story.id]?.position ?? story.position
         if abs(fraction - old) < 0.01 && fraction <= 0.92 { return }
-        mutateState(of: story, rebuild: false) {
-            $0.position = fraction
-            if fraction > 0.92 { $0.read = true }
-        }
+        // Deliberately does NOT touch @Published state: at 344k stories a
+        // published mutation re-diffs the whole story List per scroll tick.
+        // userStates + disk get the truth; views read via position(for:).
+        var state = userStates[story.id] ?? UserState()
+        state.position = fraction
+        if fraction > 0.92 { state.read = true }
+        userStates[story.id] = state
+        let store = self.store
+        let id = story.id
+        let snapshot = state
+        Task.detached(priority: .utility) { store.saveUserState(snapshot, for: id) }
+    }
+
+    /// Authoritative reading position (userStates may be newer than the
+    /// published Story, since position saves skip published state).
+    func position(for story: Story) -> Double {
+        userStates[story.id]?.position ?? story.position
     }
 
     func setCustomTags(_ story: Story, tags: [String]) {

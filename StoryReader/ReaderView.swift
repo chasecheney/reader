@@ -445,8 +445,9 @@ struct ReaderView: View {
             paragraphs = Self.splitParagraphs(body)
             loading = false
 
-            // Restore saved reading position.
-            let fraction = current.position
+            // Restore saved reading position (userStates is authoritative;
+            // published Story.position can lag by design).
+            let fraction = vm.position(for: current)
             if fraction > 0.01, paragraphs.count > 1 {
                 let target = min(paragraphs.count - 1,
                                  Int(fraction * Double(paragraphs.count)))
