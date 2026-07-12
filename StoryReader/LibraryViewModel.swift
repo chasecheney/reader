@@ -656,26 +656,27 @@ final class LibraryViewModel: ObservableObject {
     }
 
     /// All series in the library (unfiltered), for the series picker.
-    func seriesChoices() -> [(key: String, title: String, count: Int)] {
-        var first: [String: String] = [:]   // key -> best (natural-min) title
-        var counts: [String: Int] = [:]
-        for s in stories.values {
-            let k = s.effectiveSeriesKey
-            counts[k, default: 0] += 1
-            if let t = first[k] {
-                if s.title.localizedStandardCompare(t) == .orderedAscending {
+    /// Computed off the main thread — at 344k stories this walks the whole
+    /// catalog and runs the base-title regex per series, which is far too
+    /// heavy for a computed property evaluated per render.
+    func computeSeriesChoices() async -> [(key: String, title: String, count: Int)] {
+        let snapshot = stories
+        return await Task.detached(priority: .userInitiated) {
+            var first: [String: String] = [:]   // key -> lexically-min title
+            var counts: [String: Int] = [:]
+            for s in snapshot.values {
+                let k = s.effectiveSeriesKey
+                counts[k, default: 0] += 1
+                if let t = first[k] {
+                    if s.title < t { first[k] = s.title }
+                } else {
                     first[k] = s.title
                 }
-            } else {
-                first[k] = s.title
             }
-        }
-        return counts.keys.map { k in
-            (key: k,
-             title: FilenameParser.baseTitle(first[k] ?? k),
-             count: counts[k] ?? 0)
-        }
-        .sorted { $0.title.localizedStandardCompare($1.title) == .orderedAscending }
+            return counts.map { k, n in
+                (key: k, title: FilenameParser.baseTitle(first[k] ?? k), count: n)
+            }
+        }.value
     }
 
     // MARK: - Delete everything (testing / reset)

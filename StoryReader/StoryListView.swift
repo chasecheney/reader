@@ -181,35 +181,46 @@ struct SeriesPickerView: View {
     let story: Story
 
     @State private var search = ""
+    /// Full series list, similarity-ranked ONCE when the sheet opens
+    /// (the reference title never changes). The filter field then only
+    /// substring-matches this pre-ranked, pre-lowercased array — the old
+    /// per-render recompute walked 344k stories per keystroke.
+    @State private var ranked: [(key: String, title: String, lower: String, count: Int)] = []
+    @State private var loadingChoices = true
 
-    private var choices: [(key: String, title: String, count: Int)] {
-        let all = vm.seriesChoices().filter { $0.key != story.effectiveSeriesKey }
-        let q = search.trimmingCharacters(in: .whitespaces)
-        let filtered = q.isEmpty
-            ? all
-            : all.filter { $0.title.localizedCaseInsensitiveContains(q) }
-        // Most similar to this story's title first, so the series it likely
-        // belongs to is at the top.
+    private var choices: [(key: String, title: String, lower: String, count: Int)] {
+        let q = search.trimmingCharacters(in: .whitespaces).lowercased()
+        let filtered = q.isEmpty ? ranked : ranked.filter { $0.lower.contains(q) }
+        return Array(filtered.prefix(200))
+    }
+
+    private func loadChoices() async {
+        let all = await vm.computeSeriesChoices()
         let reference = story.title
-        let ranked = filtered
-            .map { (choice: $0, score: Self.similarity(reference, $0.title)) }
-            .sorted {
-                if $0.score != $1.score { return $0.score > $1.score }
-                return $0.choice.title.localizedStandardCompare($1.choice.title) == .orderedAscending
-            }
-            .map { $0.choice }
-        return Array(ranked.prefix(200))
+        let myKey = story.effectiveSeriesKey
+        let result = await Task.detached(priority: .userInitiated) {
+            all.filter { $0.key != myKey }
+                .map { (choice: $0, score: Self.similarity(reference, $0.title)) }
+                .sorted {
+                    if $0.score != $1.score { return $0.score > $1.score }
+                    return $0.choice.title < $1.choice.title
+                }
+                .map { (key: $0.choice.key, title: $0.choice.title,
+                        lower: $0.choice.title.lowercased(), count: $0.choice.count) }
+        }.value
+        ranked = result
+        loadingChoices = false
     }
 
     // MARK: - Title similarity (prefix + shared words)
 
-    private static func tokens(_ s: String) -> [String] {
+    nonisolated private static func tokens(_ s: String) -> [String] {
         s.lowercased()
             .components(separatedBy: CharacterSet.alphanumerics.inverted)
             .filter { !$0.isEmpty }
     }
 
-    static func similarity(_ a: String, _ b: String) -> Double {
+    nonisolated static func similarity(_ a: String, _ b: String) -> Double {
         let ta = tokens(a), tb = tokens(b)
         guard !ta.isEmpty, !tb.isEmpty else { return 0 }
 
@@ -246,6 +257,9 @@ struct SeriesPickerView: View {
                 Section("Move into") {
                     TextField("Filter series…", text: $search)
                         .textFieldStyle(.roundedBorder)
+                    if loadingChoices {
+                        HStack { ProgressView(); Text("Loading series…").foregroundStyle(.secondary) }
+                    }
                     ForEach(choices, id: \.key) { choice in
                         Button {
                             vm.setSeriesOverride(story, key: choice.key)
@@ -272,6 +286,7 @@ struct SeriesPickerView: View {
                 }
             }
         }
+        .task { await loadChoices() }
         #if os(macOS)
         .frame(minWidth: 440, minHeight: 480)
         #endif
