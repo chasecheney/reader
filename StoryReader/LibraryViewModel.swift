@@ -679,6 +679,33 @@ final class LibraryViewModel: ObservableObject {
         }.value
     }
 
+    // MARK: - Deleting stories
+
+    /// Deletes stories (files + metadata + index rows) and updates the
+    /// catalog in one publish. iCloud propagates removals to other devices.
+    func deleteStories(_ list: [Story]) async {
+        guard !list.isEmpty else { return }
+        let store = self.store
+        let items = list.map { (stem: $0.stem, id: $0.id) }
+        await Task.detached(priority: .userInitiated) {
+            for it in items { store.deleteStory(stem: it.stem, id: it.id) }
+        }.value
+        if let index {
+            for it in items { await index.remove(stem: it.stem) }
+        }
+        var dict = stories
+        for it in items {
+            dict[it.stem] = nil
+            userStates[it.id] = nil
+        }
+        stories = dict
+        if let sel = selectedStoryStem, dict[sel] == nil {
+            selectedStoryStem = nil
+        }
+        rebuildGroups()
+        rebuildTagCounts()
+    }
+
     // MARK: - Delete everything (testing / reset)
 
     func deleteAllData() async {

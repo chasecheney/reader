@@ -7,6 +7,8 @@ struct StoryListView: View {
     @State private var reorderGroup: SeriesGroup?
     @State private var seriesPickerStory: Story?
     @State private var expandedGroups: Set<String> = []
+    @State private var storyToDelete: Story?
+    @State private var seriesToDelete: SeriesGroup?
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -48,6 +50,11 @@ struct StoryListView: View {
                                         vm.resetSeriesOrder(group)
                                     }
                                 }
+                                Divider()
+                                Button("Delete Series (\(group.stories.count) parts)…",
+                                       role: .destructive) {
+                                    seriesToDelete = group
+                                }
                             }
                     }
                 }
@@ -88,6 +95,38 @@ struct StoryListView: View {
         }
         .sheet(item: $seriesPickerStory) { story in
             SeriesPickerView(story: story)
+        }
+        .confirmationDialog(
+            "Delete “\(storyToDelete?.title ?? "")”?",
+            isPresented: Binding(get: { storyToDelete != nil },
+                                 set: { if !$0 { storyToDelete = nil } }),
+            titleVisibility: .visible
+        ) {
+            Button("Delete Story", role: .destructive) {
+                if let s = storyToDelete {
+                    Task { await vm.deleteStories([s]) }
+                }
+                storyToDelete = nil
+            }
+            Button("Cancel", role: .cancel) { storyToDelete = nil }
+        } message: {
+            Text("Removes the story file, its tags, and reading state\(vm.usingICloud ? " from all your devices" : ""). This cannot be undone.")
+        }
+        .confirmationDialog(
+            "Delete “\(seriesToDelete?.title ?? "")” — all \(seriesToDelete?.stories.count ?? 0) parts?",
+            isPresented: Binding(get: { seriesToDelete != nil },
+                                 set: { if !$0 { seriesToDelete = nil } }),
+            titleVisibility: .visible
+        ) {
+            Button("Delete \(seriesToDelete?.stories.count ?? 0) Parts", role: .destructive) {
+                if let g = seriesToDelete {
+                    Task { await vm.deleteStories(g.stories) }
+                }
+                seriesToDelete = nil
+            }
+            Button("Cancel", role: .cancel) { seriesToDelete = nil }
+        } message: {
+            Text("Removes every part of this series\(vm.usingICloud ? " from all your devices" : ""). This cannot be undone.")
         }
         // Whenever the selection changes — reader part-navigation, next/prev
         // series, search, or programmatic — make sure the selected story is
@@ -170,6 +209,10 @@ struct StoryListView: View {
             Button("Reset Series to Automatic") {
                 vm.setSeriesOverride(story, key: nil)
             }
+        }
+        Divider()
+        Button("Delete Story…", role: .destructive) {
+            storyToDelete = story
         }
     }
 }

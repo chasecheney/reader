@@ -389,6 +389,18 @@ final class LibraryStore: @unchecked Sendable {
 
     // MARK: - Deleting (testing / reset)
 
+    /// Deletes one story's file (all on-disk variants) and its user
+    /// metadata. On iCloud, the deletion propagates to other devices.
+    func deleteStory(stem: String, id: String) {
+        guard let dir = storiesURL else { return }
+        for name in [stem + ".lzfse", stem, "." + stem + ".lzfse.icloud"] {
+            try? fm.removeItem(at: dir.appendingPathComponent(name))
+        }
+        if let ud = userDataURL {
+            try? fm.removeItem(at: ud.appendingPathComponent(id + ".json"))
+        }
+    }
+
     /// Removes only the story files (used by bundle "replace" imports).
     /// User metadata stays, so favorites/positions survive for stories that
     /// come back with the same id; tag rules and dictionary are untouched.
